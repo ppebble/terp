@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FormUserList from '../../../component/FormUserList';
-import { getMember } from '../profile.jsx';
+import { getMember } from '../profile';
 
 export default function ProfileGetListContainer() {
   const dispatch = useDispatch();
