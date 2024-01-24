@@ -1,11 +1,21 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import '../tools/css/template.css';
 // import AlertComponent from '../tools/modules/AlertComponent';
+import { any } from 'prop-types';
 import Mainlayout from '../tools/modules/MainLayout';
 import TableComponent from '../tools/modules/TableComponent';
 import TableRowComponent from '../tools/modules/TableRowComponent';
 import ServiceUrls from '../tools/config/ServiceUrls';
+import { fetchProfile } from '../tools/redux/profile';
+import { RootState, useAppDispatch } from '../tools/redux/store';
+import { useAppSelector } from '../tools/redux/hook/useCustomHook';
+
+// interface ProfilesProps {
+//   profiles: any;
+//   get: any;
+// }
 
 function FormUserList() {
   const [members, setMembers] = useState([]);
@@ -14,6 +24,18 @@ function FormUserList() {
     message: '',
     type: 'info',
   });
+
+  // redux
+  const state = useAppSelector(
+    (profileState: RootState) => profileState.profile,
+  );
+  const dispatch = useAppDispatch();
+  // const getProfile = React.useCallback(
+  //   (profileState: RootState) =>
+  // dispatch(getMember(profileState.profile.data)),
+  //   [dispatch],
+  // );
+
   // const getAPI = useCallback(async () => {
   //   const result = await axios.get(`${ServiceUrls().localUrl}/member`);
   //   // console.log("result.data: ", result.data.slice(1, 30));
@@ -23,14 +45,19 @@ function FormUserList() {
   //   getAPI();
   // }, []);
   useEffect(() => {
-    axios
-      .get(`${ServiceUrls().localUrl}/member`)
-      .then(response => {
-        setMembers(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data: ', error);
-      });
+    // axios
+    //   .get(`${ServiceUrls().localUrl}/member`)
+    //   .then(response => {
+    //     setMembers(response.data);
+    //     // getProfile(response.data);
+    //     console.log(state);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching data: ', error);
+    //   });
+    dispatch(fetchProfile()).then((response: any) => {
+      setMembers(response.payload);
+    });
   }, []);
 
   const col = [
@@ -47,25 +74,6 @@ function FormUserList() {
     { key: 'locDetail', name: '근무지' },
     { key: 'hiredate', name: '입사일' },
   ];
-  // const checkNull = (notNullList: any[]) => {
-  //   let val = false;
-  //   notNullList.forEach((e: { current: { value: any; id: any } }) => {
-  //     if (!val) {
-  //       if (!e.current.value) {
-  //         val = true;
-  //         setAlert({
-  //           ...alert,
-  //           hasAlert: true,
-  //           message: ` 값이 비었습니다. ${e.current.id} 는 필수값 입니다.`,
-  //           type: 'validation',
-  //         });
-  //       }
-  //       return val;
-  //     }
-  //     return val;
-  //   });
-  //   return val;
-  // };
   return (
     <>
       {/* <AlertComponent
@@ -113,7 +121,7 @@ function FormUserList() {
                     <button
                       type="button"
                       className="btn btn-light"
-                      // onClick={checkNull}
+                      // onClick={redux}
                     >
                       <i className="zmdi zmdi-search">자격증 소지자 검색</i>
                     </button>
@@ -146,7 +154,8 @@ function FormUserList() {
         </TableComponent> */}
         <div className="table-responsive" style={{ overflow: 'auto' }}>
           <table
-            className="table table-bordered table-striped table-hover text-nowrap library"
+            className="table table-bordered table-striped 
+            table-hover text-nowrap library"
             id="dataTable"
             width="100%"
             cellSpacing="0"

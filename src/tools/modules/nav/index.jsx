@@ -1,8 +1,8 @@
-import Nav from './Nav';
-import NavList from './NavList';
-import NavItem from './NavItem';
-import NavLink from './NavLink';
-import NavSeparator from './NavSeparator';
+import Nav from './Nav.jsx';
+import NavList from './NavList.jsx';
+import NavItem from './NavItem.jsx';
+import NavLink from './NavLink.jsx';
+import NavSeparator from './NavSeparator.jsx';
 
 Nav.List = NavList;
 Nav.Item = NavItem;

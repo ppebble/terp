@@ -1,2 +1,4 @@
-export const LOG_IN = 'profile/LOG_IN';
-export const GET = 'profile/GET';
+import { ActionType } from 'typesafe-actions';
+
+export const login = 'profile/login';
+export const get = 'profile/get';
