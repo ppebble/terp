@@ -29,7 +29,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<FormSignUp />} />
           <Route path="/member" element={<FormUserList />} />
-          <Route path="/grid" element={<LoginComponent />} />
+          <Route path="/login" element={<LoginComponent />} />
         </Routes>
       </Layout>
     </BrowserRouter>

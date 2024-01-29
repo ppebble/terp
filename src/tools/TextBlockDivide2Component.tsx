@@ -45,7 +45,7 @@ function TextBlockDivide2Componet({
   };
   return (
     <>
-      {/* <AlertComponent
+      <AlertComponent
         show={alert.hasAlert}
         setAlert={(
           flag: React.SetStateAction<{
@@ -56,7 +56,7 @@ function TextBlockDivide2Componet({
         ) => setAlert(flag)}
         message={alert.message}
         type={alert.type}
-      /> */}
+      />
       <div className="row form-group">
         <div style={{ display: 'flex' }}>
           <div className="col col-md-3">

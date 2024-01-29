@@ -18,7 +18,7 @@ function SideNav() {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link to="/signin" active={isActive('/signin')}>
+          <Nav.Link to="/login" active={isActive('/login')}>
             User
           </Nav.Link>
         </Nav.Item>

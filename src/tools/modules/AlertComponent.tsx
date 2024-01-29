@@ -12,7 +12,7 @@ interface AlertProps {
   type: string;
 }
 type modalType = {
-  [type: string]: string;
+  [key: string]: JSX.Element;
 };
 
 function AlertComponent({ show, setAlert, message, type }: AlertProps) {
@@ -28,34 +28,34 @@ function AlertComponent({ show, setAlert, message, type }: AlertProps) {
   };
 
   const errorModal: modalType = {
-    // access: (
-    //   <ErrorModal
-    //     key={type}
-    //     close={close}
-    //     handleClose={handleClose}
-    //     message={message}
-    //   />
-    // ),
-    // validation: (
-    //   <ValidationModal
-    //     key={type}
-    //     close={close}
-    //     handleClose={handleClose}
-    //     message={message}
-    //   />
-    // ),
-    // info: (
-    //   <InfoModal
-    //     key={type}
-    //     close={close}
-    //     handleClose={handleClose}
-    //     message={message}
-    //   />
-    // ),
+    access: (
+      <ErrorModal
+        key={type}
+        close={close}
+        handleClose={handleClose}
+        message={message}
+      />
+    ),
+    validation: (
+      <ValidationModal
+        key={type}
+        close={close}
+        handleClose={handleClose}
+        message={message}
+      />
+    ),
+    info: (
+      <InfoModal
+        key={type}
+        close={close}
+        handleClose={handleClose}
+        message={message}
+      />
+    ),
   };
 
   const modal = errorModal[type];
 
-  return [modal];
+  return modal;
 }
 export default AlertComponent;

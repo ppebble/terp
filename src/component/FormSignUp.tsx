@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../tools/css/template.css';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import moment from 'moment/moment';
 import ServiceUrls from '../tools/config/ServiceUrls';
-// import AlertComponent from '../tools/modules/AlertComponent';
 import EduComponent from '../tools/EduComponent';
 import ComboBoxComponent from '../tools/ComboBoxComponent';
 import TextBlockDivide2Componet from '../tools/TextBlockDivide2Component';
 import TextBlockDivide1Componet from '../tools/TextBlockDivide1Component';
 import RadioComponent from '../tools/RadioComponent';
+import AlertComponent from '../tools/modules/AlertComponent';
 
 function FormSignIn() {
   const [alert, setAlert] = useState({
@@ -40,7 +41,6 @@ function FormSignIn() {
   const contact = useRef<any>(null);
   const email = useRef<any>(null);
   const address = useRef<any>(null);
-  const eduHis = useRef<any>(null);
   const techLvl = useRef<any>(null);
   const position = useRef<any>(null);
   const workType = useRef<any>(null);
@@ -107,13 +107,20 @@ function FormSignIn() {
   const nowDate = moment().format('YYYY-MM-DD HH:mm:ss');
   const NotNullList = [userId, password, name];
   const [workPlaceOptions, setWorkPlaceOptions] = useState();
+  const [techGradeItem, setTechGradeItem] = useState();
+  const [spotItem, setSpotItem] = useState();
+  const [positionItem, setPositionItem] = useState();
+  const [taskItem, setTaskItem] = useState();
+  const [locItem, setLocItem] = useState();
+  const [locDetailItem, setLocDetailItem] = useState();
+  const navigate = useNavigate();
   const checkNull = (notNullList: string | any[]) => {
     for (let i = 0; i < notNullList.length; i += 1) {
       if (!notNullList[i].current.value) {
         setAlert({
           ...alert,
           hasAlert: true,
-          message: ` 값이 비었습니다. ${notNullList[i].current.id} 는 필수값 입니다.`,
+          message: ` 값이 비었습니다. ${notNullList[i].current.name} 은(는) 필수값 입니다.`,
           type: 'validation',
         });
         return false;
@@ -123,10 +130,14 @@ function FormSignIn() {
   };
   const Post = () => {
     const gender = male.current.checked
-      ? male.current.value
-      : female.current.value;
+      ? male.current.name
+      : female.current.name;
     const regNo = `${regNoFront.current.value}-${regNoEnd.current.value}`;
     const empNo = `${empNoF.current.value}-${empNoB.current.value}`;
+    const scienceTechCertify = `${ntisNoF.current.value}-${ntisNoB.current.value}`;
+    const highschool = `${highSchool.current.value}/${highFlag.current.props.value.value}/${highDate.current.value}`;
+    const education = `${uniSchool.current.value}/${uniMajor.current.value}/${uniFlag.current.props.value.value}/${uniDate.current.value}`;
+    const gradschool = `${gradSchool.current.value}/${gradMajor.current.value}/${gradFlag.current.props.value.value}/${gradDate.current.value}`;
     const param = {
       userId: userId.current.value,
       userPw: password.current.value,
@@ -134,7 +145,7 @@ function FormSignIn() {
       residentNumber: regNo,
       gender,
       engName: engName.current.value,
-      task: dept.current.value,
+      task: taskItem,
       empNo,
       hiredate: enterDate.current.value,
       family: famRelation.current.value,
@@ -146,16 +157,20 @@ function FormSignIn() {
       emergencyTel: contact.current.value,
       userEmail: email.current.value,
       address: address.current.value,
-      // education: eduHis.current.value,
-      techGrade: techLvl.current.value,
-      position: position.current.value,
-      spot: position.current.value,
-      loc: workType.current.value,
-      locDetail: workPlace.current.value,
+      techGrade: techGradeItem,
+      position: positionItem,
+      spot: spotItem,
+      loc: locItem,
+      locDetail: locDetailItem,
+      scienceTechCertify,
       admincheck: 0,
       createTime: '',
+      highschool,
+      education,
+      gradSchool: gradschool,
     };
     param.createTime = nowDate;
+    // param.admincheck.. position.current.value값에 따라 변경
     axios
       .post(`${ServiceUrls().localUrl}/member/save`, param)
       .then(response => {
@@ -166,6 +181,7 @@ function FormSignIn() {
             message: `가입이 완료되었습니다.`,
             type: 'info',
           });
+          navigate('/login');
         } else {
           setAlert({
             ...alert,
@@ -210,6 +226,7 @@ function FormSignIn() {
     let list: any = [];
     list = initSelectItem(valList);
     setWorkPlaceOptions(list);
+    setLocItem(e.value);
   };
 
   const handleRegex = (e: { target: { id: any; value: string } }) => {
@@ -244,7 +261,7 @@ function FormSignIn() {
 
   return (
     <>
-      {/* <AlertComponent
+      <AlertComponent
         show={alert.hasAlert}
         setAlert={(
           flag: React.SetStateAction<{
@@ -255,7 +272,7 @@ function FormSignIn() {
         ) => setAlert(flag)}
         message={alert.message}
         type={alert.type}
-      /> */}
+      />
       <div className="body">
         <form className="form">
           <TextBlockDivide1Componet
@@ -388,6 +405,7 @@ function FormSignIn() {
             label="기술등급"
             ref1={techLvl}
             options={initSelectItem(techLevelList)}
+            handler={choice => setTechGradeItem(choice.value)}
           />
           <br />
           {/* <TextBlockDivide1Componet
@@ -402,16 +420,19 @@ function FormSignIn() {
             label="직급"
             ref1={spot}
             options={initSelectItem(spotList)}
+            handler={choice => setSpotItem(choice.value)}
           />
           <ComboBoxComponent
             label="직책"
             ref1={position}
             options={initSelectItem(positionList)}
+            handler={choice => setPositionItem(choice.value)}
           />
           <ComboBoxComponent
             label="부서"
             ref1={dept}
             options={initSelectItem(taskList)}
+            handler={choice => setTaskItem(choice.value)}
           />
           <TextBlockDivide2Componet
             label="과학기술번호"
@@ -434,6 +455,7 @@ function FormSignIn() {
             label="근무지"
             ref1={workPlace}
             options={workPlaceOptions}
+            handler={choice => setLocDetailItem(choice.value)}
           />
           <EduComponent
             school="고등학교"

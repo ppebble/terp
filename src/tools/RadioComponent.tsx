@@ -33,7 +33,7 @@ function RadioComponent({
           ref={ref1}
           type="radio"
           id="male"
-          name="gender"
+          name={val1}
           defaultValue="male"
           style={{ marginRight: 10 }}
         />
@@ -47,7 +47,7 @@ function RadioComponent({
           ref={ref2}
           type="radio"
           id="female"
-          name="gender"
+          name={val2}
           defaultValue="female"
           style={{ marginRight: 10 }}
         />

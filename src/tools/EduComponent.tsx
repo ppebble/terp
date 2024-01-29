@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 interface EduProps {
@@ -22,6 +22,7 @@ function EduComponent({
     { label: '중퇴', value: '중퇴' },
     { label: '졸업예정', value: '졸업예정' },
   ];
+  const [gradFlag, setGradFlag] = useState('');
   return (
     <div className="row form-group">
       <div className="col col-md-3">
@@ -54,6 +55,8 @@ function EduComponent({
           className="form-control"
           options={gradStateList}
           ref={refGradFlag}
+          defaultValue={gradStateList[0]}
+          // onChange={setGradFlag}
         />
       </div>
       <div className="col-12 col-md-2">

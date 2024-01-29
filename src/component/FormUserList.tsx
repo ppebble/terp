@@ -1,21 +1,10 @@
-import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import '../tools/css/template.css';
-// import AlertComponent from '../tools/modules/AlertComponent';
-import { any } from 'prop-types';
 import Mainlayout from '../tools/modules/MainLayout';
-import TableComponent from '../tools/modules/TableComponent';
-import TableRowComponent from '../tools/modules/TableRowComponent';
-import ServiceUrls from '../tools/config/ServiceUrls';
 import { fetchProfile } from '../tools/redux/profile';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
-
-// interface ProfilesProps {
-//   profiles: any;
-//   get: any;
-// }
+import AlertComponent from '../tools/modules/AlertComponent';
 
 function FormUserList() {
   const [members, setMembers] = useState([]);
@@ -25,36 +14,12 @@ function FormUserList() {
     type: 'info',
   });
 
-  // redux
   const state = useAppSelector(
     (profileState: RootState) => profileState.profile,
   );
   const dispatch = useAppDispatch();
-  // const getProfile = React.useCallback(
-  //   (profileState: RootState) =>
-  // dispatch(getMember(profileState.profile.data)),
-  //   [dispatch],
-  // );
 
-  // const getAPI = useCallback(async () => {
-  //   const result = await axios.get(`${ServiceUrls().localUrl}/member`);
-  //   // console.log("result.data: ", result.data.slice(1, 30));
-  //   setMembers(result.data);
-  // }, [`${ServiceUrls().localUrl}/member`]);
-  // useEffect(() => {
-  //   getAPI();
-  // }, []);
   useEffect(() => {
-    // axios
-    //   .get(`${ServiceUrls().localUrl}/member`)
-    //   .then(response => {
-    //     setMembers(response.data);
-    //     // getProfile(response.data);
-    //     console.log(state);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching data: ', error);
-    //   });
     dispatch(fetchProfile()).then((response: any) => {
       setMembers(response.payload);
     });
@@ -76,7 +41,7 @@ function FormUserList() {
   ];
   return (
     <>
-      {/* <AlertComponent
+      <AlertComponent
         show={alert.hasAlert}
         setAlert={(
           flag: React.SetStateAction<{
@@ -87,7 +52,7 @@ function FormUserList() {
         ) => setAlert(flag)}
         message={alert.message}
         type={alert.type}
-      /> */}
+      />
       <Mainlayout>
         <div className="section__content section__content--p30">
           <div className="card shadow mb-4">
@@ -138,20 +103,6 @@ function FormUserList() {
             </div>
           </div>
         </div>
-        {/* <TableComponent col={col}>
-          {Array.from(members).map((item, index) => (
-            <TableRowComponent
-              length={col.length}
-              i={col.map(e => {
-                return e.key;
-              })}
-              data={item}
-              rowcount={index}
-              key={members[index]}
-              id={members[index]}
-            />
-          ))}
-        </TableComponent> */}
         <div className="table-responsive" style={{ overflow: 'auto' }}>
           <table
             className="table table-bordered table-striped 
@@ -168,8 +119,8 @@ function FormUserList() {
               </tr>
             </thead>
             <tbody>
-              {members.map((row, rowIndex) => (
-                <tr key={row[rowIndex]}>
+              {members.map((row: any, rowIndex) => (
+                <tr key={row.userId}>
                   {col.map((column, colIndex) => (
                     <td key={column.key}>{row[column.key]}</td>
                   ))}
