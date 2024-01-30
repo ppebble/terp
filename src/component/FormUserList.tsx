@@ -21,7 +21,11 @@ function FormUserList() {
 
   useEffect(() => {
     dispatch(fetchProfile()).then((response: any) => {
+      if (!response.payload) {
+        return false;
+      }
       setMembers(response.payload);
+      return true;
     });
   }, []);
 
