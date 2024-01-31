@@ -1,5 +1,13 @@
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+/// <reference types="redux-persist" />
+import {
+  combineReducers,
+  configureStore,
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
+import persistReducer from 'redux-persist/es/persistReducer';
+import storage from 'redux-persist/lib/storage';
 import axios from 'axios';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
@@ -63,12 +71,25 @@ type SliceState = {
   error: null | string | unknown;
   loading: boolean;
   data: ProfileAttributes[];
+  value: { isAuthorized: false; userId: ''; username: ''; token: '' };
 };
-const initialState: SliceState = { error: null, loading: false, data: [] };
+const initialState: SliceState = {
+  value: { isAuthorized: false, userId: '', username: '', token: '' },
+  error: null,
+  loading: false,
+  data: [],
+};
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {},
+  reducers: {
+    login: (state, action) => {
+      state.value = action.payload;
+    },
+    logout: state => {
+      state.value = initialState.value;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchProfile.pending, state => {
@@ -87,6 +108,10 @@ export const profileSlice = createSlice({
   },
 });
 
-// export const { login } = profileSlice.actions;
+// export const perStore = configureStore({
+//   reducer: persistReducer(persistConfig, reducers),
+// });
+
+export const { login, logout } = profileSlice.actions;
 // export const { getMember } = profileSlice.actions;
 export default profileSlice.reducer;

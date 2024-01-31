@@ -11,10 +11,13 @@ import GridComponent from './tools/modules/GridComponent';
 import TableComponent from './tools/modules/TableComponent';
 import EduComponent from './tools/EduComponent';
 import LoginComponent from './component/Login';
+import FindIdComponent from './tools/modules/FindIdComponent';
+import FormDashboard from './component/FormDashboard';
+import Header from './component/Header';
 
 const Layout = styled.div`
   display: flex;
-  padding: 32px 0;
+  padding: 12px 0;
   color: #a7a9be;
   font-size: 1.5rem;
   font-family: sans-serif;
@@ -24,9 +27,11 @@ function App() {
   useEffect(() => {}, []);
   return (
     <BrowserRouter>
+      <Header />
       <Layout>
         <SideNav />
         <Routes>
+          <Route path="/" element={<FormDashboard />} />
           <Route path="/signup" element={<FormSignUp />} />
           <Route path="/member" element={<FormUserList />} />
           <Route path="/login" element={<LoginComponent />} />

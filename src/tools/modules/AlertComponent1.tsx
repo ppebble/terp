@@ -15,7 +15,7 @@ type modalType = {
   [key: string]: JSX.Element;
 };
 
-function AlertComponent({ show, setAlert, message, type }: AlertProps) {
+function AlertComponent1({ show, setAlert, message, type }: AlertProps) {
   const [close, setClose] = useState(show);
   useEffect(() => {
     setClose(show);
@@ -58,4 +58,4 @@ function AlertComponent({ show, setAlert, message, type }: AlertProps) {
 
   return modal;
 }
-export default AlertComponent;
+export default AlertComponent1;

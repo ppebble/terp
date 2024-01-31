@@ -40,8 +40,8 @@ function SideNav() {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link to="/grid" active={isActive('/grid')}>
-            Grid
+          <Nav.Link to="/findidpw" active={isActive('/findidpw')}>
+            findId
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>

@@ -1,20 +1,29 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { PersistGate } from 'redux-persist/integration/react';
 import 'react-grid-layout/css/styles.css';
 import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
+import { persistStore } from 'redux-persist';
 import 'react-resizable/css/styles.css';
 import App from './App';
-import store from './tools/redux/store';
+import { store } from './tools/redux/store';
 
+export const persistor = persistStore(store);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement, // 여기 HTMLElement 넣어주면 끝
 );
 
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </CookiesProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

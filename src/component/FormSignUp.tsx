@@ -12,14 +12,9 @@ import ComboBoxComponent from '../tools/ComboBoxComponent';
 import TextBlockDivide2Componet from '../tools/TextBlockDivide2Component';
 import TextBlockDivide1Componet from '../tools/TextBlockDivide1Component';
 import RadioComponent from '../tools/RadioComponent';
-import AlertComponent from '../tools/modules/AlertComponent';
+import AlertComponent from '../tools/modules/alert/AlertComponent';
 
 function FormSignIn() {
-  const [alert, setAlert] = useState({
-    hasAlert: false,
-    message: '',
-    type: 'info',
-  });
   const spot = useRef<any>(null);
   const name = useRef<any>(null);
   const userId = useRef<any>(null);
@@ -117,11 +112,10 @@ function FormSignIn() {
   const checkNull = (notNullList: string | any[]) => {
     for (let i = 0; i < notNullList.length; i += 1) {
       if (!notNullList[i].current.value) {
-        setAlert({
-          ...alert,
-          hasAlert: true,
-          message: ` 값이 비었습니다. ${notNullList[i].current.name} 은(는) 필수값 입니다.`,
-          type: 'validation',
+        AlertComponent({
+          inputTitle: '회원가입 실패',
+          type: 'custom',
+          inputText: `값이 입력되지 않았습니다. ${NotNullList[i].current.name}은(는) 필수값 입니다.`,
         });
         return false;
       }
@@ -175,28 +169,25 @@ function FormSignIn() {
       .post(`${ServiceUrls().localUrl}/member/save`, param)
       .then(response => {
         if (response.data === 'success') {
-          setAlert({
-            ...alert,
-            hasAlert: true,
-            message: `가입이 완료되었습니다.`,
-            type: 'info',
+          AlertComponent({
+            inputTitle: '회원가입 실패',
+            type: 'custom',
+            inputText: `가입이 완료되었습니다`,
           });
           navigate('/login');
         } else {
-          setAlert({
-            ...alert,
-            hasAlert: true,
-            message: response.data,
-            type: 'validation',
+          AlertComponent({
+            inputTitle: '회원가입 실패',
+            type: 'custom',
+            inputText: response.data,
           });
         }
       })
       .catch(response => {
-        setAlert({
-          ...alert,
-          hasAlert: true,
-          message: response.message,
-          type: 'access',
+        AlertComponent({
+          inputTitle: '회원가입 실패',
+          type: 'custom',
+          inputText: `서버와 연결이 끊겼습니다. ${response.message}`,
         });
       });
   };
@@ -249,256 +240,241 @@ function FormSignIn() {
         break;
     }
     if (!regex.test(e.target.value)) {
-      setAlert({
-        ...alert,
-        hasAlert: true,
-        message: `입력 값이 올바르지 않습니다. ${desc}`,
-        type: 'validation',
+      AlertComponent({
+        inputTitle: '회원가입 실패',
+        type: 'custom',
+        inputText: `입력값이 올바르지 않습니다. ${NotNullList}`,
       });
       e.target.value = '';
     }
   };
 
   return (
-    <>
-      <AlertComponent
-        show={alert.hasAlert}
-        setAlert={(
-          flag: React.SetStateAction<{
-            hasAlert: boolean;
-            message: string;
-            type: string;
-          }>,
-        ) => setAlert(flag)}
-        message={alert.message}
-        type={alert.type}
-      />
-      <div className="body">
-        <form className="form">
-          <TextBlockDivide1Componet
-            label="아이디"
-            id="user_id"
-            ref1={userId}
-            type="text"
-            placeHolder=""
-          />
-          <br />
-          <TextBlockDivide1Componet
-            placeHolder=""
-            id="password"
-            label="암호"
-            ref1={password}
-            type="password"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="이름"
-            ref1={name}
-            type="text"
-            placeHolder=""
-            id="user_name"
-          />
-          <br />
-          <TextBlockDivide2Componet
-            label="주민등록번호"
-            handler={handleRegex}
-            id1="reg_number_f"
-            id2="reg_number_b"
-            ref1={regNoFront}
-            ref2={regNoEnd}
-            type1="text"
-            type2="text"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="영문명"
-            ref1={engName}
-            type="text"
-            placeHolder=""
-            id="engName"
-          />
-          <br />
-          <TextBlockDivide2Componet
-            label="사원번호"
-            id1="emp_no_f"
-            id2="emp_no_b"
-            ref1={empNoF}
-            ref2={empNoB}
-            type1="text"
-            type2="text"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="입사일"
-            ref1={enterDate}
-            placeHolder=""
-            id="hiredate"
-            type="date"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="가족관계"
-            ref1={famRelation}
-            type="text"
-            placeHolder=""
-            id="family"
-          />
-          <br />
-          <TextBlockDivide2Componet
-            label="입대 / 제대 날짜"
-            ref1={enlistmentDate}
-            ref2={dischargeDate}
-            type1="date"
-            type2="date"
-            id1="army_enter"
-            id2="army_end"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="병과"
-            ref1={militarySub}
-            type="text"
-            placeHolder=""
-            id="army_branch"
-          />
-          <RadioComponent
-            label="성별"
-            val1="남자"
-            ref1={male}
-            val2="여자"
-            ref2={female}
-            onChangeHandler={undefined}
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="생일"
-            ref1={birthDay}
-            type="date"
-            placeHolder=""
-            id="birth"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="연락처"
-            ref1={contact}
-            id="contact_number"
-            placeHolder="-을 제외하고 숫자만 작성해주세요"
-            type="number"
-          />
-          <TextBlockDivide1Componet
-            label="이메일"
-            ref1={email}
-            type="text"
-            placeHolder=""
-            id="user_email"
-          />
-          <br />
-          <TextBlockDivide1Componet
-            label="주소"
-            ref1={address}
-            type="text"
-            placeHolder=""
-            id="address"
-          />
-          <br />
-          <ComboBoxComponent
-            label="기술등급"
-            ref1={techLvl}
-            options={initSelectItem(techLevelList)}
-            handler={choice => setTechGradeItem(choice.value)}
-          />
-          <br />
-          {/* <TextBlockDivide1Componet
+    <div className="body">
+      <form className="form">
+        <TextBlockDivide1Componet
+          label="아이디"
+          id="user_id"
+          ref1={userId}
+          type="text"
+          placeHolder=""
+        />
+        <br />
+        <TextBlockDivide1Componet
+          placeHolder=""
+          id="password"
+          label="암호"
+          ref1={password}
+          type="password"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="이름"
+          ref1={name}
+          type="text"
+          placeHolder=""
+          id="user_name"
+        />
+        <br />
+        <TextBlockDivide2Componet
+          label="주민등록번호"
+          handler={handleRegex}
+          id1="reg_number_f"
+          id2="reg_number_b"
+          ref1={regNoFront}
+          ref2={regNoEnd}
+          type1="text"
+          type2="text"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="영문명"
+          ref1={engName}
+          type="text"
+          placeHolder=""
+          id="engName"
+        />
+        <br />
+        <TextBlockDivide2Componet
+          label="사원번호"
+          id1="emp_no_f"
+          id2="emp_no_b"
+          ref1={empNoF}
+          ref2={empNoB}
+          type1="text"
+          type2="text"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="입사일"
+          ref1={enterDate}
+          placeHolder=""
+          id="hiredate"
+          type="date"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="가족관계"
+          ref1={famRelation}
+          type="text"
+          placeHolder=""
+          id="family"
+        />
+        <br />
+        <TextBlockDivide2Componet
+          label="입대 / 제대 날짜"
+          ref1={enlistmentDate}
+          ref2={dischargeDate}
+          type1="date"
+          type2="date"
+          id1="army_enter"
+          id2="army_end"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="병과"
+          ref1={militarySub}
+          type="text"
+          placeHolder=""
+          id="army_branch"
+        />
+        <RadioComponent
+          label="성별"
+          val1="남자"
+          ref1={male}
+          val2="여자"
+          ref2={female}
+          onChangeHandler={undefined}
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="생일"
+          ref1={birthDay}
+          type="date"
+          placeHolder=""
+          id="birth"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="연락처"
+          ref1={contact}
+          id="contact_number"
+          placeHolder="-을 제외하고 숫자만 작성해주세요"
+          type="number"
+        />
+        <TextBlockDivide1Componet
+          label="이메일"
+          ref1={email}
+          type="text"
+          placeHolder=""
+          id="user_email"
+        />
+        <br />
+        <TextBlockDivide1Componet
+          label="주소"
+          ref1={address}
+          type="text"
+          placeHolder=""
+          id="address"
+        />
+        <br />
+        <ComboBoxComponent
+          label="기술등급"
+          ref1={techLvl}
+          options={initSelectItem(techLevelList)}
+          handler={choice => setTechGradeItem(choice.value)}
+        />
+        <br />
+        {/* <TextBlockDivide1Componet
             label="사진첨부"
             type="file"
             // ref1="d"
             placeHolder=""
             id=""
           /> */}
-          <br />
-          <ComboBoxComponent
-            label="직급"
-            ref1={spot}
-            options={initSelectItem(spotList)}
-            handler={choice => setSpotItem(choice.value)}
-          />
-          <ComboBoxComponent
-            label="직책"
-            ref1={position}
-            options={initSelectItem(positionList)}
-            handler={choice => setPositionItem(choice.value)}
-          />
-          <ComboBoxComponent
-            label="부서"
-            ref1={dept}
-            options={initSelectItem(taskList)}
-            handler={choice => setTaskItem(choice.value)}
-          />
-          <TextBlockDivide2Componet
-            label="과학기술번호"
-            ref1={ntisNoF}
-            ref2={ntisNoB}
-            type1="number"
-            type2="number"
-            id1="ntisf"
-            id2="ntisb"
-          />
-          <br />
-          <ComboBoxComponent
-            label="근무 형태"
-            ref1={workType}
-            handler={onWorkTypeChangeHandler}
-            options={initSelectItem(workTypeList)}
-          />
-          <br />
-          <ComboBoxComponent
-            label="근무지"
-            ref1={workPlace}
-            options={workPlaceOptions}
-            handler={choice => setLocDetailItem(choice.value)}
-          />
-          <EduComponent
-            school="고등학교"
-            refGradDate={highDate}
-            refGradFlag={highFlag}
-            refSchool={highSchool}
-            refMajor={null}
-          />
-          <EduComponent
-            school="대학교"
-            refGradDate={uniDate}
-            refGradFlag={uniFlag}
-            refMajor={uniMajor}
-            refSchool={uniSchool}
-          />
-          <EduComponent
-            school="대학원"
-            refGradDate={gradDate}
-            refGradFlag={gradFlag}
-            refMajor={gradMajor}
-            refSchool={gradSchool}
-          />
-          <TextBlockDivide1Componet
-            ref1={doubleMajor1}
-            label="복수전공1"
-            type="text"
-            placeHolder=""
-            id="doubleMajor1"
-          />
-          <TextBlockDivide1Componet
-            ref1={doubleMajor2}
-            label="복수전공2"
-            type="text"
-            placeHolder=""
-            id="doubleMajor2"
-          />
-          <br />
-          <Button className="inputInfo" onClick={onSaveClick}>
-            제출
-          </Button>
-        </form>
-      </div>
-    </>
+        <br />
+        <ComboBoxComponent
+          label="직급"
+          ref1={spot}
+          options={initSelectItem(spotList)}
+          handler={choice => setSpotItem(choice.value)}
+        />
+        <ComboBoxComponent
+          label="직책"
+          ref1={position}
+          options={initSelectItem(positionList)}
+          handler={choice => setPositionItem(choice.value)}
+        />
+        <ComboBoxComponent
+          label="부서"
+          ref1={dept}
+          options={initSelectItem(taskList)}
+          handler={choice => setTaskItem(choice.value)}
+        />
+        <TextBlockDivide2Componet
+          label="과학기술번호"
+          ref1={ntisNoF}
+          ref2={ntisNoB}
+          type1="number"
+          type2="number"
+          id1="ntisf"
+          id2="ntisb"
+        />
+        <br />
+        <ComboBoxComponent
+          label="근무 형태"
+          ref1={workType}
+          handler={onWorkTypeChangeHandler}
+          options={initSelectItem(workTypeList)}
+        />
+        <br />
+        <ComboBoxComponent
+          label="근무지"
+          ref1={workPlace}
+          options={workPlaceOptions}
+          handler={choice => setLocDetailItem(choice.value)}
+        />
+        <EduComponent
+          school="고등학교"
+          refGradDate={highDate}
+          refGradFlag={highFlag}
+          refSchool={highSchool}
+          refMajor={null}
+        />
+        <EduComponent
+          school="대학교"
+          refGradDate={uniDate}
+          refGradFlag={uniFlag}
+          refMajor={uniMajor}
+          refSchool={uniSchool}
+        />
+        <EduComponent
+          school="대학원"
+          refGradDate={gradDate}
+          refGradFlag={gradFlag}
+          refMajor={gradMajor}
+          refSchool={gradSchool}
+        />
+        <TextBlockDivide1Componet
+          ref1={doubleMajor1}
+          label="복수전공1"
+          type="text"
+          placeHolder=""
+          id="doubleMajor1"
+        />
+        <TextBlockDivide1Componet
+          ref1={doubleMajor2}
+          label="복수전공2"
+          type="text"
+          placeHolder=""
+          id="doubleMajor2"
+        />
+        <br />
+        <Button className="inputInfo" onClick={onSaveClick}>
+          제출
+        </Button>
+      </form>
+    </div>
   );
 }
 export default FormSignIn;
