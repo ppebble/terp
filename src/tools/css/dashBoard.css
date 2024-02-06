@@ -11,6 +11,20 @@
   text-align: center;
   vertical-align: middle !important;
 }
+.chart-card {
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  padding-right: 35px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 60px;
+  padding-top: 47px;
+}
 .no-gutters {
   /*    margin-top: 3%;  */
   /* 	margin-left: 3%; */

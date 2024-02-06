@@ -13,6 +13,7 @@ import TextBlockDivide2Componet from '../tools/TextBlockDivide2Component';
 import TextBlockDivide1Componet from '../tools/TextBlockDivide1Component';
 import RadioComponent from '../tools/RadioComponent';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
+import Mainlayout from '../tools/modules/MainLayout';
 
 function FormSignIn() {
   const spot = useRef<any>(null);
@@ -250,7 +251,7 @@ function FormSignIn() {
   };
 
   return (
-    <div className="body">
+    <Mainlayout>
       <form className="form">
         <TextBlockDivide1Componet
           label="아이디"
@@ -474,7 +475,7 @@ function FormSignIn() {
           제출
         </Button>
       </form>
-    </div>
+    </Mainlayout>
   );
 }
 export default FormSignIn;

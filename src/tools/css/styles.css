@@ -1,11 +1,121 @@
 .pwd-content {
   display: none;
 }
+.main {
+  width: 70%;
+  height: 75%;
+  margin: auto;
+  border-radius: 10px;
+  /* display: flex; */
+  /* background: rgb(249, 63, 76); */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease-in 0.1s;
+}
 .on {
   animation: fadein0 1s forwards;
   -moz-animation: fadein0 1s forwards; /* Firefox */
   -webkit-animation: fadein0 1s forwards; /* Safari and Chrome */
   -o-animation: fadein0 1s forwards; /* Opera */
+}
+.organize-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.organize-form h2 {
+  font-size: 1.4em;
+  font-weight: normal;
+  display: block;
+  width: 30%;
+  height: 2px;
+  background: rgb(49, 80, 255);
+  margin: 0;
+}
+.form-area {
+  position: fixed;
+  top: 22%;
+  left: 35%;
+  width: 30%;
+  height: 60%;
+  padding: 10px 0;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-align: center;
+  z-index: 2;
+
+  opacity: 1;
+  transition: opacity 0.5s ease-in 0.2s;
+}
+.form-area-signin {
+  opacity: 100;
+  transition: all 0.4s ease-in 0.2s;
+}
+.form {
+  width: 85%;
+  height: 50%;
+  text-align: center;
+  display: inline-flexbox;
+}
+.form-field {
+  display: flex;
+  flex-flow: column wrap;
+  width: 100%;
+}
+.form-field input {
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid rgba(116, 116, 116, 0.44);
+  height: 30px;
+  transition: border-bottom 0.1s ease-in-out 0.1s;
+}
+.form-field input:focus {
+  border-bottom: 1px solid rgb(249, 63, 76);
+}
+.form-field label {
+  position: relative;
+  top: 25px;
+  left: 5px;
+  cursor: text;
+  transition: all 0.2s ease-in-out 0.1s;
+  color: rgba(116, 116, 116, 0.44);
+  user-select: none;
+}
+.btn-sign {
+  border: none;
+  background: rgb(249, 63, 76);
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: ease 0.1s;
+}
+.btn-sign:hover {
+  background: rgb(230, 57, 69);
+}
+.login-label {
+  display: block;
+  height: 30px;
+  width: auto;
+  font-size: large;
+}
+.checkbox {
+  padding-left: 5px;
+}
+.login-input {
+  line-height: 43px;
+  border: 1px solid #e5e5e5;
+  font-size: 14px;
+  margin-left: 13px;
+  margin-right: 13px;
+  border-radius: 3px;
+  transition: all 0.5s ease;
 }
 @keyframes fadein0 {
   from {

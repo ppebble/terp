@@ -20,11 +20,11 @@ const Link = styled.a`
     background: #ff8906;
     color: #fffffe;
     transform: translateY(-2px);
-    transition: 1s;
+    transition: 0.5s;
   }
 
   &:not([href]) {
-    color: #a7a9be;
+    color: #e5e5e5;
     background: revert;
     transform: none;
   }

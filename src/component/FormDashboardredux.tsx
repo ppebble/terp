@@ -13,15 +13,14 @@ import DataColumnChart from '../tools/modules/chart/DataColumnChart';
 import DashboardLicenseData from '../tools/modules/chart/DashboardLicenseData';
 import { fetchInitData } from '../tools/redux/init';
 import options from '../tools/modules/chart/DashboardMemberData';
-import useLoginStore from '../tools/zustand/store.module';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const state = useAppSelector(
     (profileState: RootState) => profileState.profile,
   );
-  const { isAuthorized } = useLoginStore();
 
   const memberChartData = {
     options: options(),
@@ -30,7 +29,7 @@ function FormDashboard() {
     height: options().chart.height,
   };
   useEffect(() => {
-    if (!isAuthorized) {
+    if (!state.value.isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
         type: 'custom',
@@ -47,7 +46,7 @@ function FormDashboard() {
       }
       setMemberCount(memberList.length);
     }
-  }, [isAuthorized, navigate, state.data]);
+  }, [navigate, state.data, state.value.isAuthorized]);
   return (
     <Mainlayout>
       <div className="col-lg-13">

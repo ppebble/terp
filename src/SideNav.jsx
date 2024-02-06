@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Nav from './tools/modules/nav';
+import Nav from './tools/modules/navjsx';
 
 function isActive(path) {
   // return window.location.pathname.startsWith(path);
@@ -22,33 +22,13 @@ function SideNav() {
             User
           </Nav.Link>
         </Nav.Item>
-        <Nav.List expanded={isActive('/signup')}>
-          <Nav.Item>
-            <Nav.Link to="/signup" active={isActive('/signup')}>
-              Sign Up
-            </Nav.Link>
-          </Nav.Item>
+        <Nav.List expanded={isActive('/login')}>
           <Nav.Item>
             <Nav.Link to="/member" active={isActive('/member')}>
               Members
             </Nav.Link>
           </Nav.Item>
         </Nav.List>
-        <Nav.Item>
-          <Nav.Link to="/template" active={isActive('/template')}>
-            Template
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link to="/findidpw" active={isActive('/findidpw')}>
-            findId
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link to="/table" active={isActive('/table')}>
-            Table
-          </Nav.Link>
-        </Nav.Item>
         <Nav.Item>
           <Nav.Link to="/edu" active={isActive('/edu')}>
             Edu Component

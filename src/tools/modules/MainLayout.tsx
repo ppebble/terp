@@ -10,10 +10,18 @@ interface MainLayoutProps {
 
 function Mainlayout({ children }: MainLayoutProps) {
   return (
-    <div id="main-content" style={{ width: '100%' }}>
-      <Container className=".container-fluid">
-        <div className="row clearfix">{children}</div>
-      </Container>
+    <div
+      id="main-content"
+      style={{
+        width: '100%',
+        backgroundColor: '#f2f2f2',
+      }}
+    >
+      <div style={{ marginLeft: '300px' }}>
+        <Container className=".container-fluid">
+          <div className="row clearfix">{children}</div>
+        </Container>
+      </div>
     </div>
   );
 }

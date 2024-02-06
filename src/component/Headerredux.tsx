@@ -7,32 +7,29 @@ import '../tools/css/header.css';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { login } from '../tools/redux/profile';
-import useLoginStore from '../tools/zustand/store.module';
-import SideNav from '../SideNav.jsx';
 
 function Header() {
   const dispatch = useAppDispatch();
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
+  const state = useAppSelector(
+    (profileState: RootState) => profileState.profile,
+  );
   const navigate = useNavigate();
-  const { isAuthorized, logout } = useLoginStore();
+
   const goBack = () => {
     navigate(-1);
   };
 
-  const loginState = isAuthorized;
+  const loginState = state.value;
 
   const onClickLogOut = () => {
-    // dispatch(
-    //   login({
-    //     isAuthorized: false,
-    //     userId: '',
-    //     username: '',
-    //     token: '',
-    //   }),
-    // );
-    logout();
+    dispatch(
+      login({
+        isAuthorized: false,
+        userId: '',
+        username: '',
+        token: '',
+      }),
+    );
   };
 
   let url;
@@ -56,7 +53,7 @@ function Header() {
       <Link
         to="/signup"
         className={classNames('link', {
-          auth: loginState,
+          auth: loginState.isAuthorized,
         })}
       >
         <h1 className="title">SIGN UP</h1>
@@ -64,7 +61,7 @@ function Header() {
       <Link
         to="/login"
         className={classNames('link', {
-          auth: loginState,
+          auth: loginState.isAuthorized,
         })}
       >
         <h1 className="title">LOG IN</h1>
@@ -73,7 +70,7 @@ function Header() {
       <Link
         to="/login"
         className={classNames('link', {
-          auth: !loginState,
+          auth: !loginState.isAuthorized,
         })}
         onClick={onClickLogOut}
       >

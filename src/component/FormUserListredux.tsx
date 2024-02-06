@@ -8,21 +8,18 @@ import { ProfileAttributes, fetchProfile } from '../tools/redux/profile';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
-import useLoginStore from '../tools/zustand/store.module';
 
 function FormUserList() {
   const [members, setMembers] = useState<ProfileAttributes[]>([]);
 
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
+  const state = useAppSelector(
+    (profileState: RootState) => profileState.profile,
+  );
   const dispatch = useAppDispatch();
-  const useLogin = useLoginStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!state.value.isAuthorized) {
-    if (!useLogin.isAuthorized) {
+    if (!state.value.isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
         type: 'custom',
@@ -34,7 +31,7 @@ function FormUserList() {
         if (!response.payload) {
           return false;
         }
-        const memberList: ProfileAttributes[] = [...response.payload];
+        const memberList: ProfileAttributes[] = [...state.data];
         for (let i = 0; i < memberList.length; i += 1) {
           if (memberList[i].leavedate) {
             memberList.splice(i, 1);
@@ -45,7 +42,7 @@ function FormUserList() {
         return true;
       });
     }
-  }, [dispatch, navigate, useLogin.isAuthorized]);
+  }, [dispatch, navigate, state.data, state.value.isAuthorized]);
 
   const col: TableColumn<ProfileAttributes>[] = [
     { selector: row => row.empNo, name: '사원번호' },
@@ -116,18 +113,16 @@ function FormUserList() {
           </div>
         </div>
       </div>
-      <div className="card shadow mb-4">
-        <div className="table-responsive" style={{ overflow: 'auto' }}>
-          <DataTable
-            title="인력 사항"
-            columns={col}
-            data={members}
-            //   defaultSortFieldId="empNo"
-            sortIcon={<SortIcon />}
-            pagination
-            // selectableRows
-          />
-        </div>
+      <div className="table-responsive" style={{ overflow: 'auto' }}>
+        <DataTable
+          title="인력 사항"
+          columns={col}
+          data={members}
+          //   defaultSortFieldId="empNo"
+          sortIcon={<SortIcon />}
+          pagination
+          selectableRows
+        />
       </div>
     </Mainlayout>
   );

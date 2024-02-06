@@ -34,11 +34,7 @@ import ServiceUrls from '../config/ServiceUrls';
           unsubscribe()하면 subscribe로 실행했던 함수가 이후에 제거됨
         store.replaceReducer: 원래 가지고있던 reducer를 다른 reducer로 변경
     */
-
-interface AxiosKnownErr {
-  errMsg: string;
-}
-interface ProfileAttributes {
+export interface ProfileAttributes {
   empNo: string;
   userId: string;
   userName: string;
@@ -50,7 +46,8 @@ interface ProfileAttributes {
   techGrade: string;
   scienceTechCertify: string;
   locDetail: string;
-  hireDate: string;
+  hiredate: string;
+  leavedate: string;
 }
 /**
  * 비동기  처리

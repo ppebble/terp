@@ -14,12 +14,14 @@ import LoginComponent from './component/Login';
 import FindIdComponent from './tools/modules/FindIdComponent';
 import FormDashboard from './component/FormDashboard';
 import Header from './component/Header';
+import Mainlayout from './tools/modules/MainLayout';
 
 const Layout = styled.div`
   display: flex;
   padding: 12px 0;
   color: #a7a9be;
-  font-size: 1.5rem;
+  background-color: #f2f2f2;
+  font-size: 1.2rem;
   font-family: sans-serif;
 `;
 
@@ -28,8 +30,10 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Layout>
+      <aside className="sidebar">
         <SideNav />
+      </aside>
+      <Layout>
         <Routes>
           <Route path="/" element={<FormDashboard />} />
           <Route path="/signup" element={<FormSignUp />} />
