@@ -22,7 +22,7 @@ import { useAppDispatch } from '../tools/redux/store';
 import useLoginStore, {
   LoginPersistStore,
   UserInfo,
-} from '../tools/zustand/store.module';
+} from '../tools/zustand/login.store.module';
 
 function LoginComponent() {
   const navigate = useNavigate();

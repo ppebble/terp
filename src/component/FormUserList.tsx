@@ -3,21 +3,29 @@ import '../tools/css/template.css';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
+import axios from 'axios';
 import Mainlayout from '../tools/modules/MainLayout';
 import { ProfileAttributes, fetchProfile } from '../tools/redux/profile';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
-import useLoginStore from '../tools/zustand/store.module';
+import useLoginStore from '../tools/zustand/login.store.module';
+import useProfileStore, {
+  ProfileInfo,
+} from '../tools/zustand/profile.store.module';
+import ServiceUrls from '../tools/config/ServiceUrls';
 
 function FormUserList() {
-  const [members, setMembers] = useState<ProfileAttributes[]>([]);
+  //   const [members, setMembers] = useState<ProfileAttributes[]>([]);
+  const [members, setMembers] = useState<ProfileInfo[]>([]);
 
   //   const state = useAppSelector(
   //     (profileState: RootState) => profileState.profile,
   //   );
-  const dispatch = useAppDispatch();
+  //   const dispatch = useAppDispatch();
+  //   const { fetchProfile } = useProfileStore();
   const useLogin = useLoginStore();
+  const useProfile = useProfileStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,22 +38,9 @@ function FormUserList() {
       });
       navigate('/login');
     } else {
-      dispatch(fetchProfile()).then((response: any) => {
-        if (!response.payload) {
-          return false;
-        }
-        const memberList: ProfileAttributes[] = [...response.payload];
-        for (let i = 0; i < memberList.length; i += 1) {
-          if (memberList[i].leavedate) {
-            memberList.splice(i, 1);
-            i -= 1;
-          }
-        }
-        setMembers(memberList);
-        return true;
-      });
+      setMembers(useProfile.current);
     }
-  }, [dispatch, navigate, useLogin.isAuthorized]);
+  }, [navigate, useLogin.isAuthorized, useProfile]);
 
   const col: TableColumn<ProfileAttributes>[] = [
     { selector: row => row.empNo, name: '사원번호' },

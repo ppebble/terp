@@ -7,11 +7,11 @@ import '../tools/css/header.css';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { login } from '../tools/redux/profile';
-import useLoginStore from '../tools/zustand/store.module';
+import useLoginStore from '../tools/zustand/login.store.module';
 import SideNav from '../SideNav.jsx';
 
 function Header() {
-  const dispatch = useAppDispatch();
+  //   const dispatch = useAppDispatch();
   //   const state = useAppSelector(
   //     (profileState: RootState) => profileState.profile,
   //   );

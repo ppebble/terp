@@ -22,7 +22,7 @@ import { useAppDispatch } from '../tools/redux/store';
 import useLoginStore, {
   LoginPersistStore,
   UserInfo,
-} from '../tools/zustand/store.module';
+} from '../tools/zustand/login.store.module';
 import LoginLayout from '../tools/modules/LoginLayout';
 import Mainlayout from '../tools/modules/MainLayout';
 
@@ -99,7 +99,7 @@ function LoginComponent() {
             token: response.data.Data.token,
           };
           login(user);
-          navigate('/member');
+          navigate('/');
         } else {
           Swal.fire({
             title: 'CONNECTION ERROR',
@@ -185,46 +185,23 @@ function LoginComponent() {
                   {'     '}Remember Me
                 </label>
               </div>
-              <Button
-                className="btn-sign btn-in"
-                type="button"
-                id="sign_in"
-                style={{ width: '50%' }}
-                onClick={doLogin}
-              >
-                로그인
-              </Button>{' '}
             </form>
-          </div>
-
-          <div className="form-group">
-            {/* <button
-          type="button"
-          id="sign_in"
-          className="au-btn au-btn--block au-btn--green m-b-20"
-          style={{ width: '100%' }}
-          onClick={doLogin}
-        >
-          로그인
-        </button>
-        <Button onClick={onClickFindId} style={{ marginRight: '8px' }}>
-            ID 찾기
-          </Button>
-          <Button onClick={onClickFindPw} style={{ marginRight: '8px' }}>
-            비밀번호 찾기
-          </Button>
-        <div className="sign-up">
-          <button
-            type="button"
-            className="au-btn au-btn--block au-btn--blue2"
-            style={{ width: '100%' }}
-          >
-            <a href="/signup" style={{ color: 'gray' }}>
-              회원가입
-            </a>
-          </button>
-        </div> */}
-            <div style={{ float: 'right' }}>
+            <Button
+              className="btn-sign btn-in"
+              type="button"
+              id="sign_in"
+              style={{ width: '50%' }}
+              onClick={doLogin}
+            >
+              로그인
+            </Button>{' '}
+            <div className="form-group">
+              <Button onClick={onClickFindId} style={{ marginRight: '8px' }}>
+                ID 찾기
+              </Button>
+              <Button onClick={onClickFindPw} style={{ marginRight: '8px' }}>
+                비밀번호 찾기
+              </Button>
               <div />
             </div>
           </div>

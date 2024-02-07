@@ -5,24 +5,35 @@ import './index.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import 'react-grid-layout/css/styles.css';
 import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { CookiesProvider } from 'react-cookie';
 import { persistStore } from 'redux-persist';
 import 'react-resizable/css/styles.css';
 import App from './App';
 import { store } from './tools/redux/store';
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement, // 여기 HTMLElement 넣어주면 끝
 );
-
+// {
+//   /* <Provider store={store}> */
+// }
+// {
+//   /* <PersistGate loading={null} persistor={persistor}> */
+// }
+// {
+//   /* </PersistGate> */
+// }
+// {
+//   /* </Provider> */
+// }
+const queryClient = new QueryClient();
 root.render(
   <CookiesProvider>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </CookiesProvider>,
 );
 

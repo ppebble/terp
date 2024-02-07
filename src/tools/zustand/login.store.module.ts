@@ -43,10 +43,6 @@ const useLoginStore = create<LoginPersistStore>()(
           username: '',
           token: '',
         }),
-      //   fetchDate: async () => {
-      //     const result = await axios(`${ServiceUrls().localUrl}/member/sign-in`);
-      //     return result.data;
-      //   },
     })),
     {
       name: 'auth-store', // 저장소 key값

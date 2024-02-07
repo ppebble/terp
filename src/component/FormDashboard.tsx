@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Chart from 'react-apexcharts';
 import orgImg from '../tools/resources/images/icon/organization.png';
@@ -7,28 +8,42 @@ import 'react-bootstrap';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
+import useProfileStore, {
+  ProfileInfo,
+} from '../tools/zustand/profile.store.module';
 import Mainlayout from '../tools/modules/MainLayout';
 import { ProfileAttributes } from '../tools/redux/profile';
 import DataColumnChart from '../tools/modules/chart/DataColumnChart';
-import DashboardLicenseData from '../tools/modules/chart/DashboardLicenseData';
 import { fetchInitData } from '../tools/redux/init';
-import options from '../tools/modules/chart/DashboardMemberData';
-import useLoginStore from '../tools/zustand/store.module';
+import memberOptions from '../tools/modules/chart/DashboardMemberData';
+import useLoginStore from '../tools/zustand/login.store.module';
+
+import ServiceUrls from '../tools/config/ServiceUrls';
+import LicenseChartOptions, {
+  LicenseDataType,
+} from '../tools/modules/chart/DashboardLicenseData';
+import TechGradeOptions from '../tools/modules/chart/DashboardTechGradeData';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
   const navigate = useNavigate();
-  const state = useAppSelector(
-    (profileState: RootState) => profileState.profile,
-  );
+  //   const state = useAppSelector(
+  //     (profileState: RootState) => profileState.profile,
+  //   );
   const { isAuthorized } = useLoginStore();
+  const useProfile = useProfileStore();
 
-  const memberChartData = {
-    options: options(),
-    data: options().series,
-    type: options().chart.type,
-    height: options().chart.height,
+  const chartData = (chartOptions: any) => {
+    return {
+      options: chartOptions(),
+      data: chartOptions().series,
+      type: chartOptions().chart.type,
+      height: chartOptions().chart.height,
+    };
   };
+  const memberChartData = chartData(memberOptions);
+  const licenseChartData = chartData(LicenseChartOptions);
+  const techGradeChartData = chartData(TechGradeOptions);
   useEffect(() => {
     if (!isAuthorized) {
       AlertComponent({
@@ -38,16 +53,27 @@ function FormDashboard() {
       });
       navigate('/login');
     } else {
-      const memberList: ProfileAttributes[] = [...state.data];
-      for (let i = 0; i < memberList.length; i += 1) {
-        if (memberList[i].leavedate) {
-          memberList.splice(i, 1);
-          i -= 1;
-        }
-      }
-      setMemberCount(memberList.length);
+      axios.get(`${ServiceUrls().localUrl}/member`).then(response => {
+        const memberList: ProfileInfo[] = [...response.data];
+        useProfile.setTotalData(memberList);
+        useProfile.setCurrentMember([...memberList]);
+      });
+      setMemberCount(useProfile.current.length);
+      axios
+        .get(`${ServiceUrls().localUrl}/init`)
+        .then(response => {
+          const initDataList: LicenseDataType[] = [...response.data];
+          useProfile.setLicenseData(initDataList);
+        })
+        .catch(e => {
+          AlertComponent({
+            inputTitle: 'Network Error',
+            type: 'custom',
+            inputText: `자격증 현황 조회에 실패했습니다.`,
+          });
+        });
     }
-  }, [isAuthorized, navigate, state.data]);
+  }, []);
   return (
     <Mainlayout>
       <div className="col-lg-13">
@@ -97,7 +123,7 @@ function FormDashboard() {
               </div>
               <div className="col-xl-6">
                 <canvas id="developer" />
-                {/* <DataColumnChart ChartOptions={DashboardLicenseData} /> */}
+                <DataColumnChart ChartOptions={techGradeChartData} />
               </div>
             </div>
           </div>
@@ -113,7 +139,7 @@ function FormDashboard() {
             <div className="row no-gutters" style={{ marginTop: '3%' }}>
               <div className="col-xl-12">
                 <canvas id="license" />
-                {/* <DataColumnChart ChartOptions={DashboardLicenseData} /> */}
+                <DataColumnChart ChartOptions={licenseChartData} />
               </div>
             </div>
           </div>

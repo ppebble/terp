@@ -1,19 +1,41 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react';
+import useProfileStore from '../../zustand/profile.store.module';
 
-type LicenseDataType = {
-  initData: any;
+export type LicenseDataType = {
+  idx: number;
+  userId: string;
+  licenseName: string;
 };
 
-function DashboardLicenseData({ initData }: LicenseDataType) {
-  const options = {
+export default function LicenseChartOptions() {
+  const useProfile = useProfileStore();
+
+  const { licenseData } = useProfile;
+  const infoProc = licenseData.filter((member: LicenseDataType) =>
+    member.licenseName.includes('정보처리기사'),
+  );
+  const itq = licenseData.filter((member: LicenseDataType) =>
+    member.licenseName.includes('ITQ'),
+  );
+  const orgMngEng = licenseData.filter((member: LicenseDataType) =>
+    member.licenseName.includes('조직운용기사'),
+  );
+  return {
     series: [
       {
-        name: 'Inflation',
-        data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
+        // data build ...  전체 / 정보처리기사 / itq / 조직운용기사
+        name: 'members',
+        data: [
+          licenseData.length,
+          infoProc.length,
+          itq.length,
+          orgMngEng.length,
+        ],
       },
     ],
     chart: {
-      height: 350,
+      height: 300,
       type: 'bar',
     },
     plotOptions: {
@@ -27,9 +49,9 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
     dataLabels: {
       enabled: true,
       formatter(data: string) {
-        return `${data}%`;
+        return `${data}명`;
       },
-      offsetY: -20,
+      offsetY: -25,
       style: {
         fontSize: '12px',
         colors: ['#304758'],
@@ -37,21 +59,8 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
     },
 
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-      position: 'top',
+      categories: ['전체', '정보처리기사', 'ITQ', '조직운용기사'],
+      position: 'bottom',
       axisBorder: {
         show: false,
       },
@@ -84,20 +93,18 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
       labels: {
         show: false,
         formatter(data: string) {
-          return `${data}%`;
+          return `${data} 명`;
         },
       },
     },
     title: {
-      text: 'Monthly Inflation in Argentina, 2002',
+      text: '인력 사항 현황',
       floating: true,
-      offsetY: 330,
+      offsetY: 0,
       align: 'center',
       style: {
         color: '#444',
       },
     },
   };
-  return options;
 }
-export default DashboardLicenseData;

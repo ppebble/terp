@@ -1,19 +1,35 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react';
+import useProfileStore, {
+  ProfileStoreType,
+} from '../../zustand/profile.store.module';
 
-type LicenseDataType = {
-  initData: any;
-};
+export default function TechGradeOptions() {
+  const currentProfile = useProfileStore(
+    (state: ProfileStoreType) => state.current,
+  );
+  const groupByTechGrade = currentProfile.reduce((acc: any, obj: any) => {
+    const { techGrade } = obj;
+    acc[techGrade] = acc[techGrade] ?? [];
+    acc[techGrade].push(obj);
+    return acc;
+  }, {});
 
-function DashboardLicenseData({ initData }: LicenseDataType) {
-  const options = {
+  return {
     series: [
       {
-        name: 'Inflation',
-        data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
+        name: 'members',
+        data: [
+          // 초급 = 없음 + 초급
+          groupByTechGrade.초급.length + groupByTechGrade.없음.length,
+          groupByTechGrade.중급.length,
+          groupByTechGrade.고급.length,
+          groupByTechGrade.특급.length,
+        ],
       },
     ],
     chart: {
-      height: 350,
+      height: 300,
       type: 'bar',
     },
     plotOptions: {
@@ -27,9 +43,9 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
     dataLabels: {
       enabled: true,
       formatter(data: string) {
-        return `${data}%`;
+        return `${data}명`;
       },
-      offsetY: -20,
+      offsetY: -25,
       style: {
         fontSize: '12px',
         colors: ['#304758'],
@@ -37,21 +53,8 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
     },
 
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-      position: 'top',
+      categories: ['초급', '중급', '고급', '특급'],
+      position: 'bottom',
       axisBorder: {
         show: false,
       },
@@ -84,20 +87,18 @@ function DashboardLicenseData({ initData }: LicenseDataType) {
       labels: {
         show: false,
         formatter(data: string) {
-          return `${data}%`;
+          return `${data} 명`;
         },
       },
     },
     title: {
-      text: 'Monthly Inflation in Argentina, 2002',
+      text: '인력 사항 현황',
       floating: true,
-      offsetY: 330,
+      offsetY: 0,
       align: 'center',
       style: {
         color: '#444',
       },
     },
   };
-  return options;
 }
-export default DashboardLicenseData;

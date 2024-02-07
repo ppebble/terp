@@ -56,9 +56,11 @@
 }
 .form {
   width: 85%;
-  height: 50%;
+  height: 30%;
   text-align: center;
-  display: inline-flexbox;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .form-field {
   display: flex;

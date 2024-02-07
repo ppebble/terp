@@ -3,17 +3,36 @@ import React from 'react';
 import { useAppDispatch } from '../../redux/store';
 import { InitAttributeType, fetchInitData } from '../../redux/init';
 import { ProfileAttributes } from '../../redux/profile';
-
-type MemberDataType = {
-  initData?: any;
-};
+import useProfileStore, {
+  ProfileStoreType,
+} from '../../zustand/profile.store.module';
 
 export default function MemberOptions() {
+  const currentProfile = useProfileStore(
+    (state: ProfileStoreType) => state.current,
+  );
+  const groupBySpot = currentProfile.reduce((acc: any, obj: any) => {
+    const { spot } = obj;
+    acc[spot] = acc[spot] ?? [];
+    acc[spot].push(obj);
+    return acc;
+  }, {});
+
   return {
     series: [
       {
         name: 'members',
-        data: [7, 6, 2, 4, 2, 1, 1, 1, 1],
+        data: [
+          groupBySpot.주임.length,
+          groupBySpot.대리.length,
+          groupBySpot.과장.length,
+          groupBySpot.차장.length,
+          groupBySpot.부장.length,
+          groupBySpot.이사.length,
+          groupBySpot.상무.length,
+          groupBySpot.대표.length,
+          groupBySpot.회장.length,
+        ],
       },
     ],
     chart: {
