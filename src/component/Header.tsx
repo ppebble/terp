@@ -24,26 +24,7 @@ function Header() {
   const loginState = isAuthorized;
 
   const onClickLogOut = () => {
-    // dispatch(
-    //   login({
-    //     isAuthorized: false,
-    //     userId: '',
-    //     username: '',
-    //     token: '',
-    //   }),
-    // );
     logout();
-  };
-
-  let url;
-
-  const handleConnectCart = () => {
-    // 장바구니아이콘 클릭 시 로그인 상태 체크 후 라우팅 진행.
-    // if (userId === null) {
-    //   navigate('/login');
-    // } else if (userId !== null) {
-    //   navigate('/cart');
-    // }
   };
 
   return (

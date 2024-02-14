@@ -21,7 +21,7 @@ function FormLeaveList() {
   //   const [members, setMembers] = useState<ProfileAttributes[]>([]);
   const [members, setMembers] = useState<ProfileInfo[]>([]);
 
-  const { data, isLoading, isFetching } = useQuery<ProfileInfo[]>({
+  const { data, isLoading, isFetched } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
   });
@@ -39,9 +39,13 @@ function FormLeaveList() {
       navigate('/login');
     }
 
-    if (!isLoading) useProfile.setLeaveMember(data || []);
-    if (isFetching) setMembers(useProfile.leave);
-  }, []);
+    if (!isLoading) {
+      useProfile.setLeaveMember(data || []);
+    }
+    if (isFetched) {
+      setMembers(useProfile.leave);
+    }
+  }, [data, useProfile.leave]);
 
   const col: TableColumn<ProfileAttributes>[] = [
     { selector: row => row.empNo, name: '사원번호' },

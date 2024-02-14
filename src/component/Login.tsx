@@ -11,6 +11,7 @@ import { Button } from 'react-bootstrap';
 import '../tools/css/styles.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import logo from '../tools/resources/images/nexmore1.png';
 import ServiceUrls from '../tools/config/ServiceUrls';
 
@@ -25,6 +26,8 @@ import useLoginStore, {
 } from '../tools/zustand/login.store.module';
 import LoginLayout from '../tools/modules/LoginLayout';
 import Mainlayout from '../tools/modules/MainLayout';
+import { LoginModel } from '../tools/model/LoginModel';
+import { postLogin } from '../tools/service/ServiceAPI';
 
 function LoginComponent() {
   const navigate = useNavigate();
@@ -55,6 +58,11 @@ function LoginComponent() {
       removeCookie('userId');
     }
   };
+  const loginMutation = useMutation({
+    mutationKey: ['login'],
+    mutationFn: (param: LoginModel) => postLogin(param),
+  });
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (cookies.userId !== undefined) {
       setUserId(cookies.userId);
@@ -76,49 +84,28 @@ function LoginComponent() {
       });
       return false;
     }
-    axios
-      .post(`${ServiceUrls().localUrl}/member/sign-in`, param)
-      .then(response => {
-        if (response.status === 200) {
-          if (isRemember) {
-            setCookie('userId', response.data.Data.userId);
-          }
-          const user: UserInfo = {
-            isAuthorized: true,
-            userId: response.data.Data.userId,
-            username: response.data.Data.userName,
-            token: response.data.Data.token,
-          };
-          login(user);
-          navigate('/');
-        } else {
-          Swal.fire({
-            title: 'CONNECTION ERROR',
-            html: `<hr />
-                    로그인에 실패하였습니다.
-                `,
-            showCancelButton: false,
-            confirmButtonText: '확인',
-          });
+    loginMutation.mutate(param, {
+      onSuccess: data => {
+        if (isRemember) {
+          setCookie('userId', data.Data.userId);
         }
-      })
-      .catch(response => {
-        // Swal.fire({
-        //   title: 'ERROR',
-        //   html: `
-        //         <hr />
-        //             로그인에 실패하였습니다.
-        //             ${response.message}
-        //         `,
-        //   showCancelButton: false,
-        //   confirmButtonText: '확인',
-        // });
+        const user: UserInfo = {
+          isAuthorized: true,
+          userId: data.Data.userId,
+          username: data.Data.userName,
+          token: data.Data.token,
+        };
+        login(user);
+        navigate('/');
+      },
+      onError: () => {
         AlertComponent({
-          inputTitle: 'LOGIN ERROR',
+          inputTitle: 'Mutation LOGIN ERROR',
           inputText: '로그인에 실패하였습니다.',
           showCancelBtn: false,
         });
-      });
+      },
+    });
     return true;
   };
 

@@ -4,17 +4,18 @@ import useProfileStore, {
   ProfileStoreType,
 } from '../../zustand/profile.store.module';
 import AlertComponent from '../alert/AlertComponent';
+import { ChartProps } from '../../model/ChartProps';
 
 export default function MemberOptions() {
   const currentProfile = useProfileStore(
     (state: ProfileStoreType) => state.current,
   );
   if (currentProfile.length < 1) {
-    AlertComponent({
-      inputTitle: 'Network Error',
-      inputText: `조회된 데이터가 없습니다.`,
-    });
-    return false;
+    //   AlertComponent({
+    //     inputTitle: 'Network Error',
+    //     inputText: `조회된 데이터가 없습니다.`,
+    //   });
+    return ChartProps();
   }
   const groupBySpot = currentProfile.reduce((acc: any, obj: any) => {
     const { spot } = obj;

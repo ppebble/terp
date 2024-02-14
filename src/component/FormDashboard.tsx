@@ -1,41 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Chart from 'react-apexcharts';
 import { useQuery } from '@tanstack/react-query';
 import orgImg from '../tools/resources/images/icon/organization.png';
 import '../tools/css/dashBoard.css';
 import 'react-bootstrap';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
-import { RootState, useAppDispatch } from '../tools/redux/store';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
-import useProfileStore, {
-  ProfileInfo,
-} from '../tools/zustand/profile.store.module';
+import useProfileStore from '../tools/zustand/profile.store.module';
 import Mainlayout from '../tools/modules/MainLayout';
 import { ProfileAttributes } from '../tools/redux/profile';
 import DataColumnChart from '../tools/modules/chart/DataColumnChart';
-import { fetchInitData } from '../tools/redux/init';
-import memberOptions from '../tools/modules/chart/DashboardMemberData';
 import useLoginStore from '../tools/zustand/login.store.module';
 
-import ServiceUrls from '../tools/config/ServiceUrls';
-import LicenseChartOptions, {
-  LicenseDataType,
-} from '../tools/modules/chart/DashboardLicenseData';
-import TechGradeOptions from '../tools/modules/chart/DashboardTechGradeData';
-import { GetTotalProfile } from '../tools/service/ServiceAPI';
+import { LicenseDataType } from '../tools/modules/chart/DashboardLicenseData';
+import { GetTotalProfile, getLicenseData } from '../tools/service/ServiceAPI';
+import { useChartData } from '../tools/react-query/custom-hook/useDashChartData';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
-  const { data, isSuccess, isError } = useQuery<ProfileAttributes[]>({
+  const totalRes = useQuery<ProfileAttributes[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
   });
+
+  const licenseRes = useQuery<LicenseDataType[]>({
+    queryKey: ['getLicenseData'],
+    queryFn: getLicenseData,
+  });
+
   const navigate = useNavigate();
   const { isAuthorized } = useLoginStore();
   const useProfile = useProfileStore();
-
+  //   const licenseData = useLicenseData();
   useEffect(() => {
     if (!isAuthorized) {
       AlertComponent({
@@ -44,42 +39,21 @@ function FormDashboard() {
       });
       navigate('/login');
     } else {
-      axios.get(`${ServiceUrls().localUrl}/member`).then(response => {
-        const memberList: ProfileInfo[] = [...response.data];
-        useProfile.setTotalData(memberList);
-        // useProfile.setCurrentMember([...memberList]);
-        // useProfile.setLeaveMember([...memberList]);
-      });
-      //   useProfile.setTotalData(data || []);
-      setMemberCount(useProfile.current.length);
-      axios
-        .get(`${ServiceUrls().localUrl}/init`)
-        .then(response => {
-          const initDataList: LicenseDataType[] = [...response.data];
-          useProfile.setLicenseData(initDataList);
-        })
-        .catch(e => {
-          AlertComponent({
-            inputTitle: 'Network Error',
-            inputText: `자격증 현황 조회에 실패했습니다.`,
-          });
-        });
+      if (!totalRes.isLoading) {
+        useProfile.setTotalData(totalRes.data || []);
+      }
+      if (!totalRes.isLoading) {
+        useProfile.setCurrentMember(useProfile.totalData);
+      }
+      if (totalRes.isFetched) {
+        setMemberCount(useProfile.current.length);
+      }
+      if (!licenseRes.isLoading)
+        useProfile.setLicenseData(licenseRes.data || []);
     }
-  }, []);
-  const chartData = (chartOptions: any) => {
-    if (chartOptions.length < 1) {
-      return false;
-    }
-    return {
-      options: chartOptions,
-      data: chartOptions.series,
-      type: chartOptions.chart.type,
-      height: chartOptions.chart.height,
-    };
-  };
-  const memberChartData = chartData(memberOptions());
-  const licenseChartData = chartData(LicenseChartOptions());
-  const techGradeChartData = chartData(TechGradeOptions());
+  }, [totalRes.data, licenseRes.data, useProfile.current]);
+  const chartData = useChartData();
+
   return (
     <Mainlayout>
       <div className="col-lg-13">
@@ -125,11 +99,11 @@ function FormDashboard() {
             <div className="row no-gutters">
               <div className="col-xl-6">
                 <canvas id="employee" />
-                <DataColumnChart ChartOptions={memberChartData} />
+                <DataColumnChart ChartOptions={chartData.memberChartData} />
               </div>
               <div className="col-xl-6">
                 <canvas id="developer" />
-                <DataColumnChart ChartOptions={techGradeChartData} />
+                <DataColumnChart ChartOptions={chartData.techGradeChartData} />
               </div>
             </div>
           </div>
@@ -145,7 +119,7 @@ function FormDashboard() {
             <div className="row no-gutters" style={{ marginTop: '3%' }}>
               <div className="col-xl-12">
                 <canvas id="license" />
-                <DataColumnChart ChartOptions={licenseChartData} />
+                <DataColumnChart ChartOptions={chartData.licenseChartData} />
               </div>
             </div>
           </div>

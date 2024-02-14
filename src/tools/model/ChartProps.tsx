@@ -1,42 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-import React from 'react';
-import useProfileStore from '../../zustand/profile.store.module';
-import AlertComponent from '../alert/AlertComponent';
-import { ChartProps } from '../../model/ChartProps';
-
-export type LicenseDataType = {
-  idx: number;
-  userId: string;
-  licenseName: string;
-};
-
-export default function LicenseChartOptions() {
-  const useProfile = useProfileStore();
-
-  const { licenseData } = useProfile;
-  if (licenseData.length < 1) {
-    return ChartProps();
-  }
-  const infoProc = licenseData.filter((member: LicenseDataType) =>
-    member.licenseName.includes('정보처리기사'),
-  );
-  const itq = licenseData.filter((member: LicenseDataType) =>
-    member.licenseName.includes('ITQ'),
-  );
-  const orgMngEng = licenseData.filter((member: LicenseDataType) =>
-    member.licenseName.includes('조직운용기사'),
-  );
+export function ChartProps() {
   return {
     series: [
       {
-        // data build ...  전체 / 정보처리기사 / itq / 조직운용기사
         name: 'members',
-        data: [
-          licenseData.length,
-          infoProc.length,
-          itq.length,
-          orgMngEng.length,
-        ],
+        data: [],
       },
     ],
     chart: {
@@ -64,7 +31,7 @@ export default function LicenseChartOptions() {
     },
 
     xaxis: {
-      categories: ['전체', '정보처리기사', 'ITQ', '조직운용기사'],
+      categories: [],
       position: 'bottom',
       axisBorder: {
         show: false,

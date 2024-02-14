@@ -19,7 +19,7 @@ import TextBlockDivide1Componet from '../tools/TextBlockDivide1Component';
 import RadioComponent from '../tools/RadioComponent';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import Mainlayout from '../tools/modules/MainLayout';
-import { postSignIn } from '../tools/service/ServiceAPI';
+import { postSignUp } from '../tools/service/ServiceAPI';
 import { SignupModel } from '../tools/model/SignupModel';
 
 function FormSignIn() {
@@ -67,7 +67,7 @@ function FormSignIn() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const signUpMutation = useMutation({
-    mutationFn: (param: SignupModel) => postSignIn(param),
+    mutationFn: (param: SignupModel) => postSignUp(param),
     onSuccess: () => {
       navigate('/login');
     },

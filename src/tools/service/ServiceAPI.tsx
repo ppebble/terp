@@ -3,6 +3,8 @@ import React from 'react';
 import axios from 'axios';
 import ServiceUrls from '../config/ServiceUrls';
 import AlertComponent from '../modules/alert/AlertComponent';
+import { SignupModel } from '../model/SignupModel';
+import { LoginModel } from '../model/LoginModel';
 
 /**
  *
@@ -25,18 +27,22 @@ export const GetTotalProfile = async () => {
  * @returns 자격증 현황 데이터
  */
 export const getLicenseData = async () => {
-  const response = await axios
+  return await axios
     .get(`${ServiceUrls().localUrl}/init`)
-    .then(res => res.data);
-  return response.data;
+    .then(res => res.data)
+    .catch(e => {
+      AlertComponent({
+        inputTitle: 'Network Error',
+        inputText: `자격증 데이터 조회에 실패했습니다.`,
+      });
+    });
 };
-
 /**
  *  회원가입 POST
  * @param param 회원가입 파라미터
  * @returns 성공여부
  */
-export const postSignIn = async (param: any) => {
+export const postSignUp = async (param: SignupModel) => {
   return await axios
     .post(`${ServiceUrls().localUrl}/member/save`, param)
     .then(res => {
@@ -56,6 +62,18 @@ export const postSignIn = async (param: any) => {
       AlertComponent({
         inputTitle: '회원가입 실패',
         inputText: `서버와 연결이 끊겼습니다. ${res.message}`,
+      });
+    });
+};
+
+export const postLogin = async (param: LoginModel) => {
+  return await axios
+    .post(`${ServiceUrls().localUrl}/member/sign-in`, param)
+    .then(res => res.data)
+    .catch(res => {
+      AlertComponent({
+        inputTitle: '로그인실패',
+        inputText: ` ${res.message}`,
       });
     });
 };

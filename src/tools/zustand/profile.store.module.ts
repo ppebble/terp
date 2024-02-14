@@ -72,7 +72,7 @@ const useProfileStore = create<ProfileStoreType>()(
 
     {
       name: 'profile-store', // 저장소 key값
-      storage: createJSONStorage(() => localStorage), // 저장소
+      storage: createJSONStorage(() => sessionStorage), // 저장소
       version: 1.0, // version 정보
     },
   ),

@@ -49,7 +49,7 @@ function FormUserList() {
         setMembers(useProfile.current);
       }
     }
-  }, []);
+  }, [data]);
 
   const col: TableColumn<ProfileAttributes>[] = [
     { selector: row => row.empNo, name: '사원번호' },
