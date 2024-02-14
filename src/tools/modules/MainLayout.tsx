@@ -18,9 +18,9 @@ function Mainlayout({ children }: MainLayoutProps) {
       }}
     >
       <div style={{ marginLeft: '300px' }}>
-        <Container className=".container-fluid">
+        <div className="container-fluid">
           <div className="row clearfix">{children}</div>
-        </Container>
+        </div>
       </div>
     </div>
   );

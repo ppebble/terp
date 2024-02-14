@@ -29,7 +29,7 @@ function TextBlockDivide2Componet({
       if (ref2.current.value && ref1.current.value > ref2.current.value) {
         AlertComponent({
           inputTitle: '입력 에러',
-          type: 'durationError',
+          inputText: '뒤의 날짜는 앞의 날짜보다 과거일 수 없습니다..',
         });
         ref1.current.value = null;
         ref2.current.value = null;

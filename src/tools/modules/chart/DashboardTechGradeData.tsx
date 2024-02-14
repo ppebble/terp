@@ -3,11 +3,19 @@ import React from 'react';
 import useProfileStore, {
   ProfileStoreType,
 } from '../../zustand/profile.store.module';
+import AlertComponent from '../alert/AlertComponent';
 
 export default function TechGradeOptions() {
   const currentProfile = useProfileStore(
     (state: ProfileStoreType) => state.current,
   );
+  if (currentProfile.length < 1) {
+    AlertComponent({
+      inputTitle: 'Network Error',
+      inputText: `조회된 데이터가 없습니다.`,
+    });
+    return false;
+  }
   const groupByTechGrade = currentProfile.reduce((acc: any, obj: any) => {
     const { techGrade } = obj;
     acc[techGrade] = acc[techGrade] ?? [];

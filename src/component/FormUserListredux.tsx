@@ -22,7 +22,6 @@ function FormUserList() {
     if (!state.value.isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
-        type: 'custom',
         inputText: `로그인 되지 않았습니다. 로그인 화면으로 이동합니다`,
       });
       navigate('/login');

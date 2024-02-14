@@ -53,7 +53,6 @@ function FindIdComponent({ onClose, findItemType }: FindIdModalType) {
         // 인증번호가 올바르지 않습니다
         AlertComponent({
           inputTitle: '메일 발송 실패',
-          type: 'custom',
           inputText: `인증번호가 올바르지 않습니다.`,
         });
       }
@@ -61,7 +60,6 @@ function FindIdComponent({ onClose, findItemType }: FindIdModalType) {
       // 인증메일을 발송하지 않았습니다.
       AlertComponent({
         inputTitle: '메일 발송 실패',
-        type: 'custom',
         inputText: `인증메일을 발송하지 않았습니다.`,
       });
     }

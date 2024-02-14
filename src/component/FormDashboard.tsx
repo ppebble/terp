@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Chart from 'react-apexcharts';
+import { useQuery } from '@tanstack/react-query';
 import orgImg from '../tools/resources/images/icon/organization.png';
 import '../tools/css/dashBoard.css';
 import 'react-bootstrap';
@@ -23,32 +24,22 @@ import LicenseChartOptions, {
   LicenseDataType,
 } from '../tools/modules/chart/DashboardLicenseData';
 import TechGradeOptions from '../tools/modules/chart/DashboardTechGradeData';
+import { GetTotalProfile } from '../tools/service/ServiceAPI';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
+  const { data, isSuccess, isError } = useQuery<ProfileAttributes[]>({
+    queryKey: ['getTotalData'],
+    queryFn: GetTotalProfile,
+  });
   const navigate = useNavigate();
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
   const { isAuthorized } = useLoginStore();
   const useProfile = useProfileStore();
 
-  const chartData = (chartOptions: any) => {
-    return {
-      options: chartOptions(),
-      data: chartOptions().series,
-      type: chartOptions().chart.type,
-      height: chartOptions().chart.height,
-    };
-  };
-  const memberChartData = chartData(memberOptions);
-  const licenseChartData = chartData(LicenseChartOptions);
-  const techGradeChartData = chartData(TechGradeOptions);
   useEffect(() => {
     if (!isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
-        type: 'custom',
         inputText: `로그인 되지 않았습니다. 로그인 화면으로 이동합니다`,
       });
       navigate('/login');
@@ -56,8 +47,10 @@ function FormDashboard() {
       axios.get(`${ServiceUrls().localUrl}/member`).then(response => {
         const memberList: ProfileInfo[] = [...response.data];
         useProfile.setTotalData(memberList);
-        useProfile.setCurrentMember([...memberList]);
+        // useProfile.setCurrentMember([...memberList]);
+        // useProfile.setLeaveMember([...memberList]);
       });
+      //   useProfile.setTotalData(data || []);
       setMemberCount(useProfile.current.length);
       axios
         .get(`${ServiceUrls().localUrl}/init`)
@@ -68,12 +61,25 @@ function FormDashboard() {
         .catch(e => {
           AlertComponent({
             inputTitle: 'Network Error',
-            type: 'custom',
             inputText: `자격증 현황 조회에 실패했습니다.`,
           });
         });
     }
   }, []);
+  const chartData = (chartOptions: any) => {
+    if (chartOptions.length < 1) {
+      return false;
+    }
+    return {
+      options: chartOptions,
+      data: chartOptions.series,
+      type: chartOptions.chart.type,
+      height: chartOptions.chart.height,
+    };
+  };
+  const memberChartData = chartData(memberOptions());
+  const licenseChartData = chartData(LicenseChartOptions());
+  const techGradeChartData = chartData(TechGradeOptions());
   return (
     <Mainlayout>
       <div className="col-lg-13">

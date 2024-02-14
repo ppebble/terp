@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import useProfileStore from '../../zustand/profile.store.module';
+import AlertComponent from '../alert/AlertComponent';
 
 export type LicenseDataType = {
   idx: number;
@@ -12,6 +13,13 @@ export default function LicenseChartOptions() {
   const useProfile = useProfileStore();
 
   const { licenseData } = useProfile;
+  if (licenseData.length < 1) {
+    AlertComponent({
+      inputTitle: 'Network Error',
+      inputText: `조회된 데이터가 없습니다.`,
+    });
+    return false;
+  }
   const infoProc = licenseData.filter((member: LicenseDataType) =>
     member.licenseName.includes('정보처리기사'),
   );

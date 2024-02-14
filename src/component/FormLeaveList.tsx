@@ -17,23 +17,17 @@ import useProfileStore, {
 import ServiceUrls from '../tools/config/ServiceUrls';
 import { GetTotalProfile } from '../tools/service/ServiceAPI';
 
-function FormUserList() {
+function FormLeaveList() {
   //   const [members, setMembers] = useState<ProfileAttributes[]>([]);
   const [members, setMembers] = useState<ProfileInfo[]>([]);
 
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
-  //   const dispatch = useAppDispatch();
-  //   const { fetchProfile } = useProfileStore();
+  const { data, isLoading, isFetching } = useQuery<ProfileInfo[]>({
+    queryKey: ['getTotalData'],
+    queryFn: GetTotalProfile,
+  });
   const useLogin = useLoginStore();
   const useProfile = useProfileStore();
   const navigate = useNavigate();
-  const { data, isFetching, isLoading } = useQuery<ProfileInfo[]>({
-    queryKey: ['getTotalData'],
-    queryFn: GetTotalProfile,
-    refetchOnWindowFocus: true,
-  });
 
   useEffect(() => {
     // if (!state.value.isAuthorized) {
@@ -43,12 +37,10 @@ function FormUserList() {
         inputText: `로그인 되지 않았습니다. 로그인 화면으로 이동합니다`,
       });
       navigate('/login');
-    } else {
-      if (!isLoading) useProfile.setCurrentMember(data || []);
-      if (isFetching) {
-        setMembers(useProfile.current);
-      }
     }
+
+    if (!isLoading) useProfile.setLeaveMember(data || []);
+    if (isFetching) setMembers(useProfile.leave);
   }, []);
 
   const col: TableColumn<ProfileAttributes>[] = [
@@ -81,40 +73,11 @@ function FormUserList() {
           </div>
           <div className="card-body">
             <div className="table-data__tool">
-              <div
-                className="table-data__tool-left"
-                style={{
-                  border: '1px solid #b5b5b5',
-                  padding: 15,
-                  fontSize: 20,
-                }}
-              >
-                <div className="horizontal">
-                  자격증명 :
-                  <input
-                    style={{ border: '1px solid #b5b5b5', marginLeft: 10 }}
-                    className="au-input au-input--xl selectBox"
-                    type="text"
-                    placeholder="검색 단어 포함"
-                    id="license_name"
-                    name="license_name"
-                    maxLength={30}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-light"
-                    // onClick={redux}
-                  >
-                    <i className="zmdi zmdi-search">자격증 소지자 검색</i>
-                  </button>
-                  <button type="button" className="btn btn-light">
-                    <i className="zmdi zmdi-search">
-                      <a href="/member/leave">퇴사자 관리</a>
-                    </i>
-                  </button>
-                </div>
-              </div>
-              <div className="table-data__tool-right" style={{ padding: 10 }} />
+              <button type="button" className="btn btn-light">
+                <i className="zmdi zmdi-search">
+                  <a href="/member">사원 관리</a>
+                </i>
+              </button>
             </div>
           </div>
         </div>
@@ -123,13 +86,12 @@ function FormUserList() {
         <div className="card shadow mb-4">
           <div className="table-responsive" style={{ overflow: 'auto' }}>
             <DataTable
-              title="인력 사항"
+              title="퇴사자 관리"
               columns={col}
               data={members}
               //   defaultSortFieldId="empNo"
               sortIcon={<SortIcon />}
               pagination
-              onRowClicked={() => navigate('/member/profile')}
               // selectableRows
             />
           </div>
@@ -139,4 +101,4 @@ function FormUserList() {
   );
 }
 
-export default FormUserList;
+export default FormLeaveList;

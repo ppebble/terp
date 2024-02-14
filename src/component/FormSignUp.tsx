@@ -6,6 +6,11 @@ import '../tools/css/template.css';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import moment from 'moment/moment';
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import ServiceUrls from '../tools/config/ServiceUrls';
 import EduComponent from '../tools/EduComponent';
 import ComboBoxComponent from '../tools/ComboBoxComponent';
@@ -14,9 +19,11 @@ import TextBlockDivide1Componet from '../tools/TextBlockDivide1Component';
 import RadioComponent from '../tools/RadioComponent';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import Mainlayout from '../tools/modules/MainLayout';
+import { postSignIn } from '../tools/service/ServiceAPI';
+import { SignupModel } from '../tools/model/SignupModel';
 
 function FormSignIn() {
-  const spot = useRef<any>(null);
+  const spot = useRef<string>(null);
   const name = useRef<any>(null);
   const userId = useRef<any>(null);
   const password = useRef<any>(null);
@@ -56,6 +63,18 @@ function FormSignIn() {
   const doubleMajor2 = useRef<any>(null);
   const ntisNoF = useRef<any>(null);
   const ntisNoB = useRef<any>(null);
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const signUpMutation = useMutation({
+    mutationFn: (param: SignupModel) => postSignIn(param),
+    onSuccess: () => {
+      navigate('/login');
+    },
+    onError: () => {
+      return false;
+    },
+  });
 
   const techLevelList = ['없음', '초급', '중급', '고급', '특급'];
   const spotList = [
@@ -109,13 +128,12 @@ function FormSignIn() {
   const [taskItem, setTaskItem] = useState();
   const [locItem, setLocItem] = useState();
   const [locDetailItem, setLocDetailItem] = useState();
-  const navigate = useNavigate();
+
   const checkNull = (notNullList: string | any[]) => {
     for (let i = 0; i < notNullList.length; i += 1) {
       if (!notNullList[i].current.value) {
         AlertComponent({
           inputTitle: '회원가입 실패',
-          type: 'custom',
           inputText: `값이 입력되지 않았습니다. ${NotNullList[i].current.name}은(는) 필수값 입니다.`,
         });
         return false;
@@ -165,32 +183,10 @@ function FormSignIn() {
       gradSchool: gradschool,
     };
     param.createTime = nowDate;
-    // param.admincheck.. position.current.value값에 따라 변경
-    axios
-      .post(`${ServiceUrls().localUrl}/member/save`, param)
-      .then(response => {
-        if (response.data === 'success') {
-          AlertComponent({
-            inputTitle: '회원가입 실패',
-            type: 'custom',
-            inputText: `가입이 완료되었습니다`,
-          });
-          navigate('/login');
-        } else {
-          AlertComponent({
-            inputTitle: '회원가입 실패',
-            type: 'custom',
-            inputText: response.data,
-          });
-        }
-      })
-      .catch(response => {
-        AlertComponent({
-          inputTitle: '회원가입 실패',
-          type: 'custom',
-          inputText: `서버와 연결이 끊겼습니다. ${response.message}`,
-        });
-      });
+    signUpMutation.mutate(param, {
+      onSuccess: () =>
+        queryClient.invalidateQueries({ queryKey: ['getTotalData'] }),
+    });
   };
   const onSaveClick = () => {
     const flag = checkNull(NotNullList);
@@ -243,7 +239,6 @@ function FormSignIn() {
     if (!regex.test(e.target.value)) {
       AlertComponent({
         inputTitle: '회원가입 실패',
-        type: 'custom',
         inputText: `입력값이 올바르지 않습니다. ${NotNullList}`,
       });
       e.target.value = '';

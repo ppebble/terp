@@ -114,7 +114,7 @@ function LoginComponent() {
         // });
         AlertComponent({
           inputTitle: '로그인 에러',
-          type: 'login',
+          inputText: '로그인에 실패하였습니다.',
           showCancelBtn: false,
         });
       });

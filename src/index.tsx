@@ -5,7 +5,7 @@ import './index.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import 'react-grid-layout/css/styles.css';
 import { Provider } from 'react-redux';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CookiesProvider } from 'react-cookie';
 import { persistStore } from 'redux-persist';
 import 'react-resizable/css/styles.css';

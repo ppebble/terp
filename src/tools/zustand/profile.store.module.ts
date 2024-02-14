@@ -20,12 +20,14 @@ export interface ProfileInfo {
 export type ProfileStoreType = {
   totalData: ProfileInfo[];
   current: ProfileInfo[];
+  leave: ProfileInfo[];
   licenseData: LicenseDataType[];
   loading: boolean;
   error: null | string | unknown;
   setTotalData: (memberList: ProfileInfo[]) => void;
   setCurrentMember: (memberList: ProfileInfo[]) => void;
   setLicenseData: (initDataList: LicenseDataType[]) => void;
+  setLeaveMember: (memberList: ProfileInfo[]) => void;
   //   fetchProfile: () => void;
 };
 
@@ -35,6 +37,7 @@ const useProfileStore = create<ProfileStoreType>()(
       totalData: [],
       current: [],
       licenseData: [],
+      leave: [],
       loading: false,
       error: '',
       setTotalData: (memberList: ProfileInfo[]) => {
@@ -54,7 +57,19 @@ const useProfileStore = create<ProfileStoreType>()(
           current: memberList,
         });
       },
+      setLeaveMember: (memberList: ProfileInfo[]) => {
+        for (let i = 0; i < memberList.length; i += 1) {
+          if (!memberList[i].leavedate) {
+            memberList.splice(i, 1);
+            i -= 1;
+          }
+        }
+        set({
+          leave: memberList,
+        });
+      },
     })),
+
     {
       name: 'profile-store', // 저장소 key값
       storage: createJSONStorage(() => localStorage), // 저장소

@@ -72,7 +72,6 @@ function LoginComponent() {
     if (!param.userId || !param.userPw) {
       AlertComponent({
         inputTitle: '로그인 실패',
-        type: 'custom',
         inputText: `아이디, 비밀번호를 입력해주세요`,
       });
       return false;
@@ -84,14 +83,6 @@ function LoginComponent() {
           if (isRemember) {
             setCookie('userId', response.data.Data.userId);
           }
-          //   dispatch(
-          //     login({
-          //       isAuthorized: true,
-          //       userId: response.data.Data.userId,
-          //       username: response.data.Data.userName,
-          //       token: response.data.Data.token,
-          //     }),
-          //   );
           const user: UserInfo = {
             isAuthorized: true,
             userId: response.data.Data.userId,
@@ -124,7 +115,7 @@ function LoginComponent() {
         // });
         AlertComponent({
           inputTitle: 'LOGIN ERROR',
-          type: 'login',
+          inputText: '로그인에 실패하였습니다.',
           showCancelBtn: false,
         });
       });
