@@ -3,40 +3,29 @@ import '../tools/css/template.css';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Mainlayout from '../tools/modules/MainLayout';
-import { ProfileAttributes, fetchProfile } from '../tools/redux/profile';
-import { RootState, useAppDispatch } from '../tools/redux/store';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
+import { ProfileAttributes } from '../tools/redux/profile';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useLoginStore from '../tools/zustand/login.store.module';
 import useProfileStore, {
   ProfileInfo,
 } from '../tools/zustand/profile.store.module';
-import ServiceUrls from '../tools/config/ServiceUrls';
 import { GetTotalProfile } from '../tools/service/ServiceAPI';
 
 function FormUserList() {
-  //   const [members, setMembers] = useState<ProfileAttributes[]>([]);
   const [members, setMembers] = useState<ProfileInfo[]>([]);
-
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
-  //   const dispatch = useAppDispatch();
-  //   const { fetchProfile } = useProfileStore();
   const useLogin = useLoginStore();
   const useProfile = useProfileStore();
   const navigate = useNavigate();
-  const { data, isFetching, isLoading } = useQuery<ProfileInfo[]>({
+  const { data, isSuccess, isLoading } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
     refetchOnWindowFocus: true,
+    staleTime: 30000,
   });
 
   useEffect(() => {
-    // if (!state.value.isAuthorized) {
     if (!useLogin.isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
@@ -45,7 +34,7 @@ function FormUserList() {
       navigate('/login');
     } else {
       if (!isLoading) useProfile.setCurrentMember(data || []);
-      if (isFetching) {
+      if (isSuccess) {
         setMembers(useProfile.current);
       }
     }
@@ -90,7 +79,7 @@ function FormUserList() {
                 }}
               >
                 <div className="horizontal">
-                  자격증명 :
+                  {/* 자격증명 :
                   <input
                     style={{ border: '1px solid #b5b5b5', marginLeft: 10 }}
                     className="au-input au-input--xl selectBox"
@@ -106,7 +95,7 @@ function FormUserList() {
                     // onClick={redux}
                   >
                     <i className="zmdi zmdi-search">자격증 소지자 검색</i>
-                  </button>
+                  </button> */}
                   <button type="button" className="btn btn-light">
                     <i className="zmdi zmdi-search">
                       <a href="/member/leave">퇴사자 관리</a>

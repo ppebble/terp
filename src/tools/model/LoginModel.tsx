@@ -1,4 +1,4 @@
 export type LoginModel = {
-  userId: string;
-  userPw: string;
+  userId: string | undefined;
+  userPw: string | undefined;
 };

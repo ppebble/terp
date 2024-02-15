@@ -3,18 +3,18 @@ import Select from 'react-select';
 
 interface EduProps {
   school: string;
-  refSchool: any;
-  refMajor: any;
+  refSchool: React.RefObject<HTMLInputElement>;
+  refMajor?: React.RefObject<HTMLInputElement>;
   refGradFlag: any;
-  refGradDate: any;
+  refGradDate: React.RefObject<HTMLInputElement>;
 }
 
 function EduComponent({
   school = '',
-  refSchool = '',
-  refMajor = '',
-  refGradFlag = '',
-  refGradDate = '',
+  refSchool,
+  refMajor,
+  refGradFlag,
+  refGradDate,
 }: EduProps) {
   useEffect(() => {}, []);
   const gradStateList = [

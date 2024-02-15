@@ -47,6 +47,20 @@ export default function MemberOptions() {
     },
     plotOptions: {
       bar: {
+        colors: {
+          ranges: [
+            {
+              from: 5,
+              to: 20,
+              color: '#F15B46',
+            },
+            {
+              from: 0,
+              to: 4,
+              color: '#FEB019',
+            },
+          ],
+        },
         borderRadius: 10,
         dataLabels: {
           position: 'top', // top, center, bottom
@@ -97,18 +111,18 @@ export default function MemberOptions() {
         },
       },
       tooltip: {
-        enabled: true,
+        enabled: false,
       },
     },
     yaxis: {
       axisBorder: {
-        show: false,
+        show: true,
       },
       axisTicks: {
-        show: false,
+        show: true,
       },
       labels: {
-        show: false,
+        show: true,
         formatter(data: string) {
           return `${data} 명`;
         },

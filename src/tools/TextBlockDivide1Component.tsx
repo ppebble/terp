@@ -3,7 +3,7 @@ import React from 'react';
 interface Text1Props {
   // onChangeHandler?: () => void;
   label: string;
-  ref1: any;
+  ref1: React.RefObject<HTMLInputElement>;
   id: string;
   type: string;
   placeHolder: string;

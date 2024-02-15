@@ -17,11 +17,12 @@ import { useChartData } from '../tools/react-query/custom-hook/useDashChartData'
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
+  // profile 테이블 전체 값
   const totalRes = useQuery<ProfileAttributes[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
   });
-
+  // profile.license 테이블 전체 값
   const licenseRes = useQuery<LicenseDataType[]>({
     queryKey: ['getLicenseData'],
     queryFn: getLicenseData,
@@ -43,13 +44,15 @@ function FormDashboard() {
         useProfile.setTotalData(totalRes.data || []);
       }
       if (!totalRes.isLoading) {
+        // current ? total 중 leavedate가 null인 값
         useProfile.setCurrentMember(useProfile.totalData);
       }
-      if (totalRes.isFetched) {
+      if (totalRes.isSuccess) {
         setMemberCount(useProfile.current.length);
       }
-      if (!licenseRes.isLoading)
+      if (!licenseRes.isLoading) {
         useProfile.setLicenseData(licenseRes.data || []);
+      }
     }
   }, [totalRes.data, licenseRes.data, useProfile.current]);
   const chartData = useChartData();

@@ -3,15 +3,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../tools/css/template.css';
-import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import moment from 'moment/moment';
-import {
-  UseMutationOptions,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import ServiceUrls from '../tools/config/ServiceUrls';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import EduComponent from '../tools/EduComponent';
 import ComboBoxComponent from '../tools/ComboBoxComponent';
 import TextBlockDivide2Componet from '../tools/TextBlockDivide2Component';
@@ -23,46 +17,46 @@ import { postSignUp } from '../tools/service/ServiceAPI';
 import { SignupModel } from '../tools/model/SignupModel';
 
 function FormSignIn() {
-  const spot = useRef<string>(null);
-  const name = useRef<any>(null);
-  const userId = useRef<any>(null);
-  const password = useRef<any>(null);
-  const regNoFront = useRef<any>(null);
-  const regNoEnd = useRef<any>(null);
-  const female = useRef<any>(null);
-  const male = useRef<any>(null);
-  const engName = useRef<any>(null);
-  const dept = useRef<any>(null);
-  const empNoF = useRef<any>(null);
-  const empNoB = useRef<any>(null);
-  const enterDate = useRef<any>(null);
-  const famRelation = useRef<any>(null);
-  const enlistmentDate = useRef<any>(null);
-  const dischargeDate = useRef<any>(null);
-  const militarySub = useRef<any>(null);
-  const birthDay = useRef<any>(null);
-  const contact = useRef<any>(null);
-  const email = useRef<any>(null);
-  const address = useRef<any>(null);
-  const techLvl = useRef<any>(null);
-  const position = useRef<any>(null);
-  const workType = useRef<any>(null);
-  const workPlace = useRef<any>(null);
-  const uniDate = useRef<any>(null);
-  const uniMajor = useRef<any>(null);
-  const uniSchool = useRef<any>(null);
+  const spot = useRef<HTMLInputElement>(null);
+  const name = useRef<HTMLInputElement>(null);
+  const userId = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
+  const regNoFront = useRef<HTMLInputElement>(null);
+  const regNoEnd = useRef<HTMLInputElement>(null);
+  const female = useRef<HTMLInputElement>(null);
+  const male = useRef<HTMLInputElement>(null);
+  const engName = useRef<HTMLInputElement>(null);
+  const dept = useRef<HTMLInputElement>(null);
+  const empNoF = useRef<HTMLInputElement>(null);
+  const empNoB = useRef<HTMLInputElement>(null);
+  const enterDate = useRef<HTMLInputElement>(null);
+  const famRelation = useRef<HTMLInputElement>(null);
+  const enlistmentDate = useRef<HTMLInputElement>(null);
+  const dischargeDate = useRef<HTMLInputElement>(null);
+  const militarySub = useRef<HTMLInputElement>(null);
+  const birthDay = useRef<HTMLInputElement>(null);
+  const contact = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const address = useRef<HTMLInputElement>(null);
+  const techLvl = useRef<HTMLInputElement>(null);
+  const position = useRef<HTMLInputElement>(null);
+  const workType = useRef<HTMLInputElement>(null);
+  const workPlace = useRef<HTMLInputElement>(null);
+  const uniDate = useRef<HTMLInputElement>(null);
+  const uniMajor = useRef<HTMLInputElement>(null);
+  const uniSchool = useRef<HTMLInputElement>(null);
   const uniFlag = useRef<any>(null);
-  const gradDate = useRef<any>(null);
-  const highSchool = useRef<any>(null);
+  const gradDate = useRef<HTMLInputElement>(null);
+  const highSchool = useRef<HTMLInputElement>(null);
   const highFlag = useRef<any>(null);
-  const highDate = useRef<any>(null);
-  const gradMajor = useRef<any>(null);
-  const gradSchool = useRef<any>(null);
+  const highDate = useRef<HTMLInputElement>(null);
+  const gradMajor = useRef<HTMLInputElement>(null);
+  const gradSchool = useRef<HTMLInputElement>(null);
   const gradFlag = useRef<any>(null);
-  const doubleMajor1 = useRef<any>(null);
-  const doubleMajor2 = useRef<any>(null);
-  const ntisNoF = useRef<any>(null);
-  const ntisNoB = useRef<any>(null);
+  const doubleMajor1 = useRef<HTMLInputElement>(null);
+  const doubleMajor2 = useRef<HTMLInputElement>(null);
+  const ntisNoF = useRef<HTMLInputElement>(null);
+  const ntisNoB = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -134,7 +128,7 @@ function FormSignIn() {
       if (!notNullList[i].current.value) {
         AlertComponent({
           inputTitle: '회원가입 실패',
-          inputText: `값이 입력되지 않았습니다. ${NotNullList[i].current.name}은(는) 필수값 입니다.`,
+          inputText: `값이 입력되지 않았습니다. ${NotNullList[i].current?.name}은(는) 필수값 입니다.`,
         });
         return false;
       }
@@ -142,34 +136,40 @@ function FormSignIn() {
     return true;
   };
   const Post = () => {
-    const gender = male.current.checked
+    const gender = male.current?.checked
       ? male.current.name
-      : female.current.name;
-    const regNo = `${regNoFront.current.value}-${regNoEnd.current.value}`;
-    const empNo = `${empNoF.current.value}-${empNoB.current.value}`;
-    const scienceTechCertify = `${ntisNoF.current.value}-${ntisNoB.current.value}`;
-    const highschool = `${highSchool.current.value}/${highFlag.current.props.value.value}/${highDate.current.value}`;
-    const education = `${uniSchool.current.value}/${uniMajor.current.value}/${uniFlag.current.props.value.value}/${uniDate.current.value}`;
-    const gradschool = `${gradSchool.current.value}/${gradMajor.current.value}/${gradFlag.current.props.value.value}/${gradDate.current.value}`;
+      : female.current?.name;
+    const regNo = `${regNoFront.current?.value}-${regNoEnd.current?.value}`;
+    const empNo = `${empNoF.current?.value}-${empNoB.current?.value}`;
+    const scienceTechCertify = `${ntisNoF.current?.value}-${ntisNoB.current?.value}`;
+    const highschool = `${highSchool.current?.value}/
+    ${highFlag.current?.props.value.value}/
+    ${highDate.current?.value}`;
+    const education = `${uniSchool.current?.value}
+    /${uniMajor.current?.value}/${uniFlag.current?.props.value.value}
+    /${uniDate.current?.value}`;
+    const gradschool = `${gradSchool.current?.value}
+    /${gradMajor.current?.value}/${gradFlag.current?.props.value.value}
+    /${gradDate.current?.value}`;
     const param = {
-      userId: userId.current.value,
-      userPw: password.current.value,
-      userName: name.current.value,
+      userId: userId.current?.value,
+      userPw: password.current?.value,
+      userName: name.current?.value,
       residentNumber: regNo,
       gender,
-      engName: engName.current.value,
+      engName: engName.current?.value,
       task: taskItem,
       empNo,
-      hiredate: enterDate.current.value,
-      family: famRelation.current.value,
-      armyStart: enlistmentDate.current.value,
-      armyEnd: dischargeDate.current.value,
-      armyBranch: militarySub.current.value,
-      birthday: birthDay.current.value,
-      tel: contact.current.value,
-      emergencyTel: contact.current.value,
-      userEmail: email.current.value,
-      address: address.current.value,
+      hiredate: enterDate.current?.value,
+      family: famRelation.current?.value,
+      armyStart: enlistmentDate.current?.value,
+      armyEnd: dischargeDate.current?.value,
+      armyBranch: militarySub.current?.value,
+      birthday: birthDay.current?.value,
+      tel: contact.current?.value,
+      emergencyTel: contact.current?.value,
+      userEmail: email.current?.value,
+      address: address.current?.value,
       techGrade: techGradeItem,
       position: positionItem,
       spot: spotItem,
@@ -435,7 +435,6 @@ function FormSignIn() {
           refGradDate={highDate}
           refGradFlag={highFlag}
           refSchool={highSchool}
-          refMajor={null}
         />
         <EduComponent
           school="대학교"

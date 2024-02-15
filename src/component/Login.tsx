@@ -1,38 +1,21 @@
-import React, {
-  Children,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import Swal from 'sweetalert2';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Button } from 'react-bootstrap';
 import '../tools/css/styles.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import logo from '../tools/resources/images/nexmore1.png';
-import ServiceUrls from '../tools/config/ServiceUrls';
-
+import { useMutation } from '@tanstack/react-query';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import FindIdComponent from '../tools/modules/FindIdComponent';
 import Modal from '../tools/modules/Modal';
-import { useAppDispatch } from '../tools/redux/store';
-// import { login } from '../tools/redux/profile';
-import useLoginStore, {
-  LoginPersistStore,
-  UserInfo,
-} from '../tools/zustand/login.store.module';
-import LoginLayout from '../tools/modules/LoginLayout';
+import useLoginStore, { UserInfo } from '../tools/zustand/login.store.module';
 import Mainlayout from '../tools/modules/MainLayout';
 import { LoginModel } from '../tools/model/LoginModel';
 import { postLogin } from '../tools/service/ServiceAPI';
 
 function LoginComponent() {
   const navigate = useNavigate();
-  const refUserId = useRef<any>(null);
-  const password = useRef<any>(null);
+  const refUserId = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [findItemType, setFindItemType] = useState<boolean>(true);
   const [userId, setUserId] = useState('');
@@ -62,7 +45,6 @@ function LoginComponent() {
     mutationKey: ['login'],
     mutationFn: (param: LoginModel) => postLogin(param),
   });
-  const queryClient = useQueryClient();
   useEffect(() => {
     if (cookies.userId !== undefined) {
       setUserId(cookies.userId);
@@ -74,8 +56,8 @@ function LoginComponent() {
   };
   const doLogin = () => {
     const param = {
-      userId: refUserId.current.value,
-      userPw: password.current.value,
+      userId: refUserId.current?.value,
+      userPw: password.current?.value,
     };
     if (!param.userId || !param.userPw) {
       AlertComponent({

@@ -1,9 +1,8 @@
-import React from 'react';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { persistReducer } from 'redux-persist';
-import profile, { profileSlice } from './profile';
+import { profileSlice } from './profile';
 
 const reducers = combineReducers({
   profile: profileSlice.reducer,

@@ -5,16 +5,16 @@ interface RadioProps {
   label: string;
   val1: string;
   val2: string;
-  ref1: any;
-  ref2: any;
+  ref1: React.RefObject<HTMLInputElement>;
+  ref2: React.RefObject<HTMLInputElement>;
 }
 function RadioComponent({
   onChangeHandler,
   label = 'label',
   val1 = '',
   val2 = '',
-  ref1 = 'ref1',
-  ref2 = 'ref2',
+  ref1,
+  ref2,
 }: RadioProps) {
   return (
     <div className="row form-group">

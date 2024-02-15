@@ -3,34 +3,30 @@ import '../tools/css/template.css';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Mainlayout from '../tools/modules/MainLayout';
 import { ProfileAttributes, fetchProfile } from '../tools/redux/profile';
-import { RootState, useAppDispatch } from '../tools/redux/store';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useLoginStore from '../tools/zustand/login.store.module';
 import useProfileStore, {
   ProfileInfo,
 } from '../tools/zustand/profile.store.module';
-import ServiceUrls from '../tools/config/ServiceUrls';
 import { GetTotalProfile } from '../tools/service/ServiceAPI';
 
 function FormLeaveList() {
   //   const [members, setMembers] = useState<ProfileAttributes[]>([]);
   const [members, setMembers] = useState<ProfileInfo[]>([]);
 
-  const { data, isLoading, isFetched } = useQuery<ProfileInfo[]>({
+  const { data, isLoading, isSuccess } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
+    staleTime: Infinity,
   });
   const useLogin = useLoginStore();
   const useProfile = useProfileStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!state.value.isAuthorized) {
     if (!useLogin.isAuthorized) {
       AlertComponent({
         inputTitle: 'Auth Error',
@@ -40,9 +36,10 @@ function FormLeaveList() {
     }
 
     if (!isLoading) {
+      // leave ? total 중 leavedate IS NOT NULL 인 값
       useProfile.setLeaveMember(data || []);
     }
-    if (isFetched) {
+    if (isSuccess) {
       setMembers(useProfile.leave);
     }
   }, [data, useProfile.leave]);

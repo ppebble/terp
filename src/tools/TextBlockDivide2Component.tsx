@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-param-reassign */
-import React, { Ref, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import AlertComponent from './modules/alert/AlertComponent';
 
 interface Text2Props {
@@ -8,8 +8,8 @@ interface Text2Props {
   label: string;
   type1: string;
   type2: string;
-  ref1: any;
-  ref2: any;
+  ref1: React.RefObject<HTMLInputElement>;
+  ref2: React.RefObject<HTMLInputElement>;
   id1: string;
   id2: string;
 }
@@ -25,14 +25,14 @@ function TextBlockDivide2Componet({
 }: Text2Props) {
   useEffect(() => {}, []);
   const dateHandler = () => {
-    if (ref1.current.type === 'date' && ref2.current.type === 'date') {
-      if (ref2.current.value && ref1.current.value > ref2.current.value) {
+    if (ref1.current?.type === 'date' && ref2.current?.type === 'date') {
+      if (ref2.current?.value && ref1.current.value > ref2.current.value) {
         AlertComponent({
           inputTitle: '입력 에러',
           inputText: '뒤의 날짜는 앞의 날짜보다 과거일 수 없습니다..',
         });
-        ref1.current.value = null;
-        ref2.current.value = null;
+        ref1.current.value = '';
+        ref2.current.value = '';
       }
     }
   };
