@@ -1,0 +1,7 @@
+.tab-button {
+  background-color: transparent;
+  border-style: none;
+}
+.nav :hover {
+  background-color: rgba(231, 216, 216, 0.678);
+}

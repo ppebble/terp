@@ -69,7 +69,10 @@ function LoginComponent() {
     loginMutation.mutate(param, {
       onSuccess: data => {
         if (isRemember) {
-          setCookie('userId', data.Data.userId);
+          setCookie('userId', data.Data.userId, {
+            path: '/',
+            expires: new Date(Date.now() + 86400000),
+          });
         }
         const user: UserInfo = {
           isAuthorized: true,
