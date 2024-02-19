@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useRef } from 'react';
+import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
 
 function ProfileBasicComponent({ param }: ParamType) {
   const basicDiv = useRef<HTMLDivElement>(null);
-  if (param.activeTab === 'basic') {
-    // basicDiv.current?.className = 'tab-pane fade active show';
-  }
   return (
     <div
       ref={basicDiv}
-      className="tab-pane fade active show"
+      className={classNames('tab-pane fade', {
+        'active show': param.activeTab === 'basic',
+      })}
       id="show_profile"
       role="tabpanel"
       aria-labelledby="v-pills-home-tab-icons"

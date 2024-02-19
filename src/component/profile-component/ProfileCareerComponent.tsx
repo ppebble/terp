@@ -1,11 +1,16 @@
 /* eslint-disable jsx-a11y/heading-has-content */
-import React from 'react';
+import React, { useRef } from 'react';
+import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
 
 function ProfileCareerComponent({ param }: ParamType) {
+  const careerDiv = useRef<HTMLDivElement>(null);
   return (
     <div
-      className="tab-pane fade"
+      className={classNames('tab-pane fade', {
+        'active show': param.activeTab === 'career',
+      })}
+      ref={careerDiv}
       id="v-pills-career-icons"
       role="tabpanel"
       aria-labelledby="v-pills-career-tab-icons"
