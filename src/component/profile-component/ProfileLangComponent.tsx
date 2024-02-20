@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
+import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
 
 function ProfileLangComponent({ param }: ParamType) {
   return (
     <div
-      className="tab-pane fade"
+      className={classNames('tab-pane fade', {
+        'active show': param.activeTab === 'lang',
+      })}
       id="v-pills-skill-icons"
       role="tabpanel"
       aria-labelledby="v-pills-skill-tab-icons"

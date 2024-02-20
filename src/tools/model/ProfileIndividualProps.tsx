@@ -1,0 +1,26 @@
+export type ProfileIndividualProps = {
+  userId: string;
+  educationName: string;
+  eduStartDate: Date;
+  eduEndDate: Date;
+  eduDuration: number;
+  organ: string;
+  abilityType: string;
+  abilityName: string;
+  proficiency: string;
+  classCreteria: string;
+  projectName: string;
+  prjStartDate: Date;
+  prjEndDate: Date;
+  customer: string;
+  affiliation: string;
+  devField: string;
+  devRoll: string;
+  devDevice: string;
+  devOs: string;
+  devLang: string;
+  devDbms: string;
+  devTool: string;
+  devNet: string;
+  devComment: string;
+};

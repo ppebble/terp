@@ -13,13 +13,13 @@ import { LoginModel } from '../model/LoginModel';
 export const GetTotalProfile = async () => {
   return await axios
     .get(`${ServiceUrls().localUrl}/member`)
-    .then(res => res.data)
-    .catch(e => {
-      AlertComponent({
-        inputTitle: 'Network Error',
-        inputText: `데이터 조회에 실패했습니다.`,
-      });
-    });
+    .then(res => res.data);
+  // .catch(e => {
+  //   AlertComponent({
+  //     inputTitle: 'Network Error',
+  //     inputText: `데이터 조회에 실패했습니다.`,
+  //   });
+  // });
 };
 //   return response.data;
 /**
@@ -29,13 +29,13 @@ export const GetTotalProfile = async () => {
 export const getLicenseData = async () => {
   return await axios
     .get(`${ServiceUrls().localUrl}/init`)
-    .then(res => res.data)
-    .catch(e => {
-      AlertComponent({
-        inputTitle: 'Network Error',
-        inputText: `자격증 데이터 조회에 실패했습니다.`,
-      });
-    });
+    .then(res => res.data);
+  // .catch(e => {
+  //   AlertComponent({
+  //     inputTitle: 'Network Error',
+  //     inputText: `자격증 데이터 조회에 실패했습니다.`,
+  //   });
+  // });
 };
 /**
  *  회원가입 POST
@@ -75,5 +75,22 @@ export const postLogin = async (param: LoginModel) => {
         inputTitle: '로그인실패',
         inputText: ` ${res.message}`,
       });
+    });
+};
+
+/**
+ *
+ * @returns 개인 프로필 데이터
+ */
+export const getProfileData = async (userId: string) => {
+  return await axios
+    .get(`${ServiceUrls().localUrl}/member/profile?userId=${userId}`)
+    .then(res => res.data)
+    .catch(e => {
+      AlertComponent({
+        inputTitle: 'Network Error',
+        inputText: `개인 프로필 조회에 실패하였습니다.`,
+      });
+      return false;
     });
 };

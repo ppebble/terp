@@ -17,6 +17,11 @@ import { useChartData } from '../tools/react-query/custom-hook/useDashChartData'
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
+
+  const navigate = useNavigate();
+  const { isAuthorized } = useLoginStore();
+  const useProfile = useProfileStore();
+
   // profile 테이블 전체 값
   const totalRes = useQuery<ProfileAttributes[]>({
     queryKey: ['getTotalData'],
@@ -28,10 +33,6 @@ function FormDashboard() {
     queryFn: getLicenseData,
   });
 
-  const navigate = useNavigate();
-  const { isAuthorized } = useLoginStore();
-  const useProfile = useProfileStore();
-  //   const licenseData = useLicenseData();
   useEffect(() => {
     if (!isAuthorized) {
       AlertComponent({
@@ -40,6 +41,12 @@ function FormDashboard() {
       });
       navigate('/login');
     } else {
+      if (totalRes.isError && licenseRes.isError) {
+        AlertComponent({
+          inputTitle: 'Network Error',
+          inputText: `데이터 조회에 실패했습니다.`,
+        });
+      }
       if (!totalRes.isLoading) {
         useProfile.setTotalData(totalRes.data || []);
       }

@@ -1,17 +1,21 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/heading-has-content */
 import React from 'react';
+import classNames from 'classnames';
 import { ParamType } from './FormProfile';
 
 function ProfileEducationComponent({ param }: ParamType) {
   return (
     <>
       <div
-        className="tab-pane fade"
+        className={classNames('tab-pane fade', {
+          'active show': param.activeTab === 'edu',
+        })}
         id="v-pills-education-icons"
         role="tabpanel"
         aria-labelledby="v-pills-education-tab-icons"
       >
+        edu
         <div
           className="accordion accordion-secondary notFirstMargin"
           style={{ border: '1px solid rgba(0,0,0,.125)' }}

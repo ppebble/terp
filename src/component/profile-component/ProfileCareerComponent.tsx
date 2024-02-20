@@ -22,12 +22,9 @@ function ProfileCareerComponent({ param }: ParamType) {
       >
         <div
           className="card-header sort"
-          // id="headingFour${i.count}"
-          // onClick="active(this)"
           data-toggle="collapse"
           role="button"
           aria-expanded="false"
-          // aria-controls="collapse${i.count}"
         >
           <div className="span-title">
             <i className="far fa-building" />

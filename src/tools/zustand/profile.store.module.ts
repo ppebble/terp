@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { LicenseDataType } from '../modules/chart/DashboardLicenseData';
+import { ProfileIndividualProps } from '../model/ProfileIndividualProps';
 
 export interface ProfileInfo {
   empNo: string;
@@ -22,12 +23,16 @@ export type ProfileStoreType = {
   current: ProfileInfo[];
   leave: ProfileInfo[];
   licenseData: LicenseDataType[];
+  indProfileData: ProfileIndividualProps;
   loading: boolean;
+  selectedUser: string;
   error: null | string | unknown;
   setTotalData: (memberList: ProfileInfo[]) => void;
   setCurrentMember: (memberList: ProfileInfo[]) => void;
   setLicenseData: (initDataList: LicenseDataType[]) => void;
+  setIndProfileData: (profileData: ProfileIndividualProps) => void;
   setLeaveMember: (memberList: ProfileInfo[]) => void;
+  setSelectedUser: (userId: string) => void;
   //   fetchProfile: () => void;
 };
 
@@ -37,14 +42,22 @@ const useProfileStore = create<ProfileStoreType>()(
       totalData: [],
       current: [],
       licenseData: [],
+      indProfileData: {} as ProfileIndividualProps,
       leave: [],
       loading: false,
+      selectedUser: '',
       error: '',
       setTotalData: (memberList: ProfileInfo[]) => {
         set({ totalData: memberList });
       },
       setLicenseData: (initDataList: LicenseDataType[]) => {
         set({ licenseData: initDataList });
+      },
+      setIndProfileData: (profileData: ProfileIndividualProps) => {
+        set({ indProfileData: profileData });
+      },
+      setSelectedUser: (userId: string | '') => {
+        set({ selectedUser: userId });
       },
       setCurrentMember: (memberList: ProfileInfo[]) => {
         for (let i = 0; i < memberList.length; i += 1) {

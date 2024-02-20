@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import Mainlayout from '../tools/modules/MainLayout';
 import userIcon from '../tools/resources/images/user-shape.png';
 import dexcel from '../tools/resources/images/icon/dexcel.gif';
@@ -12,17 +14,49 @@ import ProfileEducationComponent from './ProfileEducationComponent';
 import ProfileLangComponent from './profile-component/ProfileLangComponent';
 import ProfileSkillInventoryComponent from './profile-component/ProfileSkillInventoryComponent';
 import ProfileTabComponent from './profile-component/ProfileTabComponent';
+import { ProfileIndividualProps } from '../tools/model/ProfileIndividualProps';
+import { getProfileData } from '../tools/service/ServiceAPI';
+import useLoginStore from '../tools/zustand/login.store.module';
+import AlertComponent from '../tools/modules/alert/AlertComponent';
+import useProfileStore from '../tools/zustand/profile.store.module';
 
 export type ParamType = {
-  param: { activeTab: string };
+  param: { activeTab: string; data: ProfileIndividualProps | undefined };
 };
-
 function FormProfile() {
+  const { userId, username } = useLoginStore();
+  const profileStore = useProfileStore();
+  const { data, isLoading, isSuccess } = useQuery<ProfileIndividualProps>({
+    queryKey: ['getProfileElseData'],
+    queryFn: () => getProfileData(userId),
+    throwOnError: true,
+  });
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('basic');
-  const param = { activeTab };
+  const param = { activeTab, data: {} as ProfileIndividualProps };
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data && profileStore.selectedUser === userId) {
+        if (data) {
+          profileStore.setIndProfileData(data);
+        }
+      } else {
+        AlertComponent({
+          inputTitle: 'Auth Error',
+          inputText: `조회할 권한이 없습니다.`,
+        });
+        navigate(-1);
+      }
+    }
+  }, [data, isSuccess]);
+
   const tabChangeHandler = (value: string) => {
     setActiveTab(value);
     param.activeTab = activeTab;
+  };
+  const onClickBack = () => {
+    navigate(-1);
   };
   return (
     <Mainlayout>
@@ -41,10 +75,10 @@ function FormProfile() {
             </span>
             <label
               className="profile-title"
-              style={{ fontSize: 18, fontWeight: 400 }}
+              style={{ fontSize: 22, fontWeight: 'bolder' }}
               htmlFor="profile"
             >
-              {}님의 정보
+              {username}님의 정보
             </label>
             <span>
               <button className="btn btn-success btn-sm">
@@ -82,7 +116,9 @@ function FormProfile() {
               수정
             </button>
             <div className="fr">
-              <button className="btn btn-info btn-sm">목록으로</button>
+              <button className="btn btn-info btn-sm" onClick={onClickBack}>
+                목록으로
+              </button>
             </div>
           </div>
         </div>

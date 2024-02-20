@@ -115,11 +115,12 @@ function FormUserList() {
               title="인력 사항"
               columns={col}
               data={members}
-              //   defaultSortFieldId="empNo"
               sortIcon={<SortIcon />}
               pagination
-              onRowClicked={() => navigate('/member/profile')}
-              // selectableRows
+              onRowClicked={e => {
+                useProfile.setSelectedUser(e.userId);
+                navigate('/member/profile');
+              }}
             />
           </div>
         </div>

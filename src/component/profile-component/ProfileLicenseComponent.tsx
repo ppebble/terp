@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
+import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
 
 function ProfileLicenseComponent({ param }: ParamType) {
   return (
     <div
-      className="tab-pane fade"
+      className={classNames('tab-pane fade', {
+        'active show': param.activeTab === 'license',
+      })}
       id="v-pills-license-icons"
       role="tabpanel"
       aria-labelledby="v-pills-license-tab-icons"

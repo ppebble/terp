@@ -1,16 +1,20 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/heading-has-content */
 import React from 'react';
+import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
 
 function ProfileSkillInventoryComponent({ param }: ParamType) {
   return (
     <div
-      className="tab-pane fade"
+      className={classNames('tab-pane fade', {
+        'active show': param.activeTab === 'skill',
+      })}
       id="v-pills-project-icons"
       role="tabpanel"
       aria-labelledby="v-pills-project-tab-icons"
     >
+      skill
       <div
         className="accordion accordion-secondary notFirstMargin"
         style={{ border: '1px solid rgba(0,0,0,.125)' }}
@@ -75,7 +79,7 @@ function ProfileSkillInventoryComponent({ param }: ParamType) {
             </div>
             <div className="line-bottom padding10">
               <h5 className="horizontal p-r-5">언어</h5>
-              <h4 className="horizontal p-r-5" />
+              <h4 className="horizontal p-r-5"> ddddddd</h4>
             </div>
             <div className="line-bottom padding10">
               <h5 className="horizontal p-r-5">DBMS</h5>
