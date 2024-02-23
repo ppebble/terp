@@ -4,13 +4,14 @@ import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
 import Mainlayout from '../tools/modules/MainLayout';
-import { ProfileAttributes, fetchProfile } from '../tools/redux/profile';
+import { fetchProfile } from '../tools/redux/profile';
 import { RootState, useAppDispatch } from '../tools/redux/store';
 import { useAppSelector } from '../tools/redux/hook/useCustomHook';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
+import { ProfileInfo } from '../tools/model/ProfileInfo';
 
 function FormUserList() {
-  const [members, setMembers] = useState<ProfileAttributes[]>([]);
+  const [members, setMembers] = useState<ProfileInfo[]>([]);
 
   const state = useAppSelector(
     (profileState: RootState) => profileState.profile,
@@ -30,7 +31,7 @@ function FormUserList() {
         if (!response.payload) {
           return false;
         }
-        const memberList: ProfileAttributes[] = [...state.data];
+        const memberList: ProfileInfo[] = [...state.data];
         for (let i = 0; i < memberList.length; i += 1) {
           if (memberList[i].leavedate) {
             memberList.splice(i, 1);
@@ -43,11 +44,11 @@ function FormUserList() {
     }
   }, [dispatch, navigate, state.data, state.value.isAuthorized]);
 
-  const col: TableColumn<ProfileAttributes>[] = [
+  const col: TableColumn<ProfileInfo>[] = [
     { selector: row => row.empNo, name: '사원번호' },
     { selector: row => row.userId, name: 'ID' },
     { selector: row => row.userName, name: '이름' },
-    { selector: row => row.userEmail, name: '이메일' },
+    { selector: row => row.emailAuth, name: '이메일' },
     { selector: row => row.tel, name: '연락처', width: '150px' },
     { selector: row => row.position, name: '직책' },
     { selector: row => row.spot, name: '직급' },

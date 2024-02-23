@@ -1,9 +1,22 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import _ from 'lodash';
 import { ParamType } from '../FormProfile';
+import useLoginStore from '../../tools/zustand/login.store.module';
+import useProfileStore from '../../tools/zustand/profile.store.module';
+import { LicenseDataType } from '../../tools/modules/chart/DashboardLicenseData';
 
 function ProfileLicenseComponent({ param }: ParamType) {
+  const { userId } = useLoginStore();
+  const { licenseData } = useProfileStore();
+  const [userData, setUserData] = useState<LicenseDataType>();
+  useEffect(() => {
+    setUserData(_.find(licenseData, { userId }));
+  }, []);
+  if (userData) {
+    console.log(userData);
+  }
   return (
     <div
       className={classNames('tab-pane fade', {

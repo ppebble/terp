@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
 import { useQuery } from '@tanstack/react-query';
 import Mainlayout from '../tools/modules/MainLayout';
-import { ProfileAttributes } from '../tools/redux/profile';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useLoginStore from '../tools/zustand/login.store.module';
-import useProfileStore, {
-  ProfileInfo,
-} from '../tools/zustand/profile.store.module';
+import useProfileStore from '../tools/zustand/profile.store.module';
 import { GetTotalProfile } from '../tools/service/ServiceAPI';
+import { ProfileInfo } from '../tools/model/ProfileInfo';
 
 function FormUserList() {
   const [members, setMembers] = useState<ProfileInfo[]>([]);
@@ -40,11 +38,11 @@ function FormUserList() {
     }
   }, [data]);
 
-  const col: TableColumn<ProfileAttributes>[] = [
+  const col: TableColumn<ProfileInfo>[] = [
     { selector: row => row.empNo, name: '사원번호' },
     { selector: row => row.userId, name: 'ID' },
     { selector: row => row.userName, name: '이름' },
-    { selector: row => row.userEmail, name: '이메일' },
+    { selector: row => row.emailAuth, name: '이메일' },
     { selector: row => row.tel, name: '연락처', width: '150px' },
     { selector: row => row.position, name: '직책' },
     { selector: row => row.spot, name: '직급' },

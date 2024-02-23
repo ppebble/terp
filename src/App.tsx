@@ -19,6 +19,7 @@ import Header from './component/Header';
 import Mainlayout from './tools/modules/MainLayout';
 import FormLeaveList from './component/FormLeaveList';
 import FormProfile from './component/FormProfile';
+import FormEditProfile from './component/FormEditProfile';
 
 const Layout = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ function App() {
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/member/leave" element={<FormLeaveList />} />
             <Route path="/member/profile" element={<FormProfile />} />
+            <Route path="/member/profile/edit" element={<FormEditProfile />} />
           </Routes>
         </Layout>
       </BrowserRouter>

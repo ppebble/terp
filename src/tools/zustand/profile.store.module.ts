@@ -2,22 +2,8 @@ import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { LicenseDataType } from '../modules/chart/DashboardLicenseData';
 import { ProfileIndividualProps } from '../model/ProfileIndividualProps';
+import { ProfileInfo } from '../model/ProfileInfo';
 
-export interface ProfileInfo {
-  empNo: string;
-  userId: string;
-  userName: string;
-  userEmail: string;
-  tel: string;
-  position: string;
-  spot: string;
-  task: string;
-  techGrade: string;
-  scienceTechCertify: string;
-  locDetail: string;
-  hiredate: string;
-  leavedate: string;
-}
 export type ProfileStoreType = {
   totalData: ProfileInfo[];
   current: ProfileInfo[];

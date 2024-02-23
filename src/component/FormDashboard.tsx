@@ -7,13 +7,13 @@ import 'react-bootstrap';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useProfileStore from '../tools/zustand/profile.store.module';
 import Mainlayout from '../tools/modules/MainLayout';
-import { ProfileAttributes } from '../tools/redux/profile';
 import DataColumnChart from '../tools/modules/chart/DataColumnChart';
 import useLoginStore from '../tools/zustand/login.store.module';
 
 import { LicenseDataType } from '../tools/modules/chart/DashboardLicenseData';
 import { GetTotalProfile, getLicenseData } from '../tools/service/ServiceAPI';
 import { useChartData } from '../tools/react-query/custom-hook/useDashChartData';
+import { ProfileInfo } from '../tools/model/ProfileInfo';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
@@ -23,7 +23,7 @@ function FormDashboard() {
   const useProfile = useProfileStore();
 
   // profile 테이블 전체 값
-  const totalRes = useQuery<ProfileAttributes[]>({
+  const totalRes = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
   });

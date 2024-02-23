@@ -23,7 +23,7 @@ import useProfileStore from '../tools/zustand/profile.store.module';
 export type ParamType = {
   param: { activeTab: string; data: ProfileIndividualProps | undefined };
 };
-function FormProfile() {
+function FormEditProfile() {
   const { userId, username } = useLoginStore();
   const profileStore = useProfileStore();
   const { data, isLoading, isSuccess } = useQuery<ProfileIndividualProps>({
@@ -111,9 +111,7 @@ function FormProfile() {
               className="btn btn-success btn-sm"
               type="submit"
               style={{ float: 'right' }}
-              onClick={() => {
-                navigate('/member/profile/edit');
-              }}
+              // onClick="modify('${profileInfo[0].number}')"
             >
               수정
             </button>
@@ -128,4 +126,4 @@ function FormProfile() {
     </Mainlayout>
   );
 }
-export default FormProfile;
+export default FormEditProfile;

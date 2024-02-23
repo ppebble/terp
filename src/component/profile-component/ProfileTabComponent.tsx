@@ -1,4 +1,4 @@
-import React, { AnchorHTMLAttributes, MouseEventHandler, useRef } from 'react';
+import React from 'react';
 import '../../tools/css/profileTab.css';
 
 type ProfileTabType = {
@@ -7,7 +7,6 @@ type ProfileTabType = {
 };
 
 function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
-  const basic = useRef<HTMLAnchorElement>(null);
   return (
     <div
       className="nav flex-column nav-pills nav-secondary
@@ -17,15 +16,14 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
       aria-orientation="vertical"
       style={{ textAlign: 'center' }}
     >
-      <a
+      <button
+        type="button"
         className="nav-link"
         id="v-pills-home-tab-icons"
         data-toggle="pill"
-        href="#show_profile"
         role="tab"
         aria-controls="show_profile"
         aria-selected="true"
-        ref={basic}
         onClick={() => {
           tabChangeHandler('basic');
         }}
@@ -41,12 +39,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         >
           기본정보
         </button>
-      </a>
-      <a
+      </button>
+      <button
+        type="button"
         className="nav-link"
         id="v-pills-career-tab-icons"
         data-toggle="pill"
-        href="#v-pills-career-icons"
         role="tab"
         aria-controls="v-pills-career-icons"
         aria-selected="false"
@@ -58,12 +56,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button" value="career">
           경력사항
         </button>
-      </a>
-      <a
+      </button>
+      <button
         className="nav-link"
+        type="button"
         id="v-pills-license-tab-icons"
         data-toggle="pill"
-        href="#v-pills-license-icons"
         role="tab"
         aria-controls="v-pills-license-icons"
         aria-selected="true"
@@ -75,12 +73,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button">
           자격증
         </button>
-      </a>
-      <a
+      </button>
+      <button
         className="nav-link"
         id="v-pills-education-tab-icons"
         data-toggle="pill"
-        href="#v-pills-education-icons"
+        type="button"
         role="tab"
         aria-controls="v-pills-education-icons"
         aria-selected="false"
@@ -92,12 +90,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button">
           교육
         </button>
-      </a>
-      <a
+      </button>
+      <button
         className="nav-link"
         id="v-pills-skill-tab-icons"
         data-toggle="pill"
-        href="#v-pills-skill-icons"
+        type="button"
         role="tab"
         aria-controls="v-pills-skill-icons"
         aria-selected="false"
@@ -109,12 +107,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button">
           보유기술 및 외국어 능력
         </button>
-      </a>
-      <a
+      </button>
+      <button
         className="nav-link"
         id="v-pills-project-tab-icons"
         data-toggle="pill"
-        href="#v-pills-project-icons"
+        type="button"
         role="tab"
         aria-controls="v-pills-project-icons"
         aria-selected="false"
@@ -126,12 +124,12 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button">
           Skill Inventory
         </button>
-      </a>
-      <a
+      </button>
+      <button
         className="nav-link"
         id="v-pills-evidence-tab-icons"
         data-toggle="pill"
-        href="#v-pills-evidence-icons"
+        type="button"
         role="tab"
         aria-controls="v-pills-evidence-icons"
         aria-selected="false"
@@ -143,7 +141,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         <button type="button" className="tab-button">
           증빙 서류
         </button>
-      </a>
+      </button>
     </div>
   );
 }

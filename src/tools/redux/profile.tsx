@@ -12,6 +12,7 @@ import axios from 'axios';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import ServiceUrls from '../config/ServiceUrls';
+import { ProfileInfo } from '../model/ProfileInfo';
 
 /*
      1. action .. action은 object / type(필수,String) | payload(param, 선택)
@@ -34,26 +35,26 @@ import ServiceUrls from '../config/ServiceUrls';
           unsubscribe()하면 subscribe로 실행했던 함수가 이후에 제거됨
         store.replaceReducer: 원래 가지고있던 reducer를 다른 reducer로 변경
     */
-export interface ProfileAttributes {
-  empNo: string;
-  userId: string;
-  userName: string;
-  userEmail: string;
-  tel: string;
-  position: string;
-  spot: string;
-  task: string;
-  techGrade: string;
-  scienceTechCertify: string;
-  locDetail: string;
-  hiredate: string;
-  leavedate: string;
-}
+// export interface ProfileAttributes {
+//   empNo: string;
+//   userId: string;
+//   userName: string;
+//   userEmail: string;
+//   tel: string;
+//   position: string;
+//   spot: string;
+//   task: string;
+//   techGrade: string;
+//   scienceTechCertify: string;
+//   locDetail: string;
+//   hiredate: string;
+//   leavedate: string;
+// }
 /**
  * 비동기  처리
  */
 export const fetchProfile = createAsyncThunk<
-  ProfileAttributes[]
+  ProfileInfo[]
   // { rejectValue: AxiosKnownErr }
 >('getProfile/fetchProfile', async thunkAPI => {
   try {
@@ -67,7 +68,7 @@ export const fetchProfile = createAsyncThunk<
 type SliceState = {
   error: null | string | unknown;
   loading: boolean;
-  data: ProfileAttributes[];
+  data: ProfileInfo[];
   value: { isAuthorized: false; userId: ''; username: ''; token: '' };
 };
 const initialState: SliceState = {
