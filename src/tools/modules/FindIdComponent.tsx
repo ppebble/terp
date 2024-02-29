@@ -1,6 +1,5 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import nodemailer from 'nodemailer';
 import '../css/styles.css';
 import { Button, CloseButton } from 'react-bootstrap';
 import 'setimmediate';
@@ -16,15 +15,15 @@ function FindIdComponent({ onClose, findItemType }: FindIdModalType) {
   const [searchId, setSearchId] = useState('');
   const [certMailNum, setCertMailNum] = useState('');
   const [sendFlag, setSendFlag] = useState(false);
-  const transporter = nodemailer.createTransport({
-    service: 'outlook',
-    port: 587,
-    host: 'mail.nexmore.co.kr',
-    auth: {
-      user: 'jwlee@nexmore.co.kr',
-      pass: 'nex147200',
-    },
-  });
+  //   const transporter = nodemailer.createTransport({
+  //     service: 'outlook',
+  //     port: 587,
+  //     host: 'mail.nexmore.co.kr',
+  //     auth: {
+  //       user: 'jwlee@nexmore.co.kr',
+  //       pass: 'nex147200',
+  //     },
+  //   });
 
   const onSearchId = () => {
     // Get ... Member Repository에서 findByEmail 로 조회된 member의 id 리턴..
@@ -38,12 +37,12 @@ function FindIdComponent({ onClose, findItemType }: FindIdModalType) {
     const auth = Math.floor(Math.random() * 9999);
     setCertMailNum(auth.toString());
     setSendFlag(true);
-    transporter.sendMail({
-      from: 'nex-erp',
-      to: pwEmail.current.value,
-      subject: 'Nex-Erp 비밀번호 찾기 안내',
-      text: `인증번호는 ${certMailNum} 입니다. 인증번호 재요청은 5분 후에 할 수 있습니다.`,
-    });
+    // transporter.sendMail({
+    //   from: 'nex-erp',
+    //   to: pwEmail.current.value,
+    //   subject: 'Nex-Erp 비밀번호 찾기 안내',
+    //   text: `인증번호는 ${certMailNum} 입니다. 인증번호 재요청은 5분 후에 할 수 있습니다.`,
+    // });
   };
   const onCertAfter = () => {
     if (sendFlag) {

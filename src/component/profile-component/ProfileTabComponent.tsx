@@ -29,16 +29,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="far fa-user-circle" />
-        <button
-          className="tab-button"
-          type="button"
-          value="basic"
-          //   onClick={e => {
-          //     tabChangeHandler((e.target as HTMLButtonElement).value);
-          //   }}
-        >
-          기본정보
-        </button>
+        기본정보
       </button>
       <button
         type="button"
@@ -53,9 +44,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="far fa-address-card" />
-        <button type="button" className="tab-button" value="career">
-          경력사항
-        </button>
+        경력사항
       </button>
       <button
         className="nav-link"
@@ -70,9 +59,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="far fa-id-badge" />
-        <button type="button" className="tab-button">
-          자격증
-        </button>
+        자격증
       </button>
       <button
         className="nav-link"
@@ -87,9 +74,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="fa fa-laptop" />
-        <button type="button" className="tab-button">
-          교육
-        </button>
+        교육
       </button>
       <button
         className="nav-link"
@@ -104,9 +89,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="fa fa-tasks" />
-        <button type="button" className="tab-button">
-          보유기술 및 외국어 능력
-        </button>
+        보유기술 및 외국어 능력
       </button>
       <button
         className="nav-link"
@@ -121,9 +104,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="fa fa-sitemap" />
-        <button type="button" className="tab-button">
-          Skill Inventory
-        </button>
+        Skill Inventory
       </button>
       <button
         className="nav-link"
@@ -138,9 +119,7 @@ function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
         }}
       >
         <i className="fas fa-file-alt" />
-        <button type="button" className="tab-button">
-          증빙 서류
-        </button>
+        증빙 서류
       </button>
     </div>
   );

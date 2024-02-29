@@ -1,27 +1,26 @@
 export type ProfileSkillType = {
   userId: string;
   projectName: string;
-  prjStartDate: string;
-  prjEndDate: string;
-  customer: string;
-  affiliation: string;
-  devField: string;
-  devRoll: string;
-  devDevice: string;
-  devOs: string;
-  devLang: string;
-  devDbms: string;
-  devTool: string;
-  devNet: string;
-  devComment: string;
+  startDate: string;
+  endDate: string;
+  clientCompany: string;
+  workingCompany: string;
+  developmentField: string;
+  role: string;
+  model: string;
+  os: string;
+  language: string;
+  dbms: string;
+  tool: string;
+  communication: string;
+  etc: string;
 };
 
 export type ProfileAbilityType = {
   userId: string;
-  abilityType: string;
-  abilityName: string;
-  proficiency: string;
-  classCreteria: string;
+  skillName: string;
+  skillGrade: string;
+  classificationCriteria: string;
 };
 export type ProfileCareerType = {
   userId: string;
@@ -36,11 +35,10 @@ export type ProfileCareerType = {
 };
 export type ProfileEduType = {
   userId: string;
-  educationName: string;
-  eduStartDate: string;
-  eduEndDate: string;
-  eduDuration: number;
-  organ: string;
+  eduName: string;
+  startDate: string;
+  EndDate: string;
+  organization: string;
 };
 export type ProfileIndividualProps = {
   abilityList: ProfileAbilityType[];

@@ -20,6 +20,7 @@ import Mainlayout from './tools/modules/MainLayout';
 import FormLeaveList from './component/FormLeaveList';
 import FormProfile from './component/FormProfile';
 import FormEditProfile from './component/FormEditProfile';
+import FormAccessList from './component/access-component/FormAccessList';
 
 const Layout = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ function App() {
             <Route path="/" element={<FormDashboard />} />
             <Route path="/signup" element={<FormSignUp />} />
             <Route path="/member" element={<FormUserList />} />
+            <Route path="/access" element={<FormAccessList />} />
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/member/leave" element={<FormLeaveList />} />
             <Route path="/member/profile" element={<FormProfile />} />

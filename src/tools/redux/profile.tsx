@@ -69,7 +69,7 @@ type SliceState = {
   error: null | string | unknown;
   loading: boolean;
   data: ProfileInfo[];
-  value: { isAuthorized: false; userId: ''; username: ''; token: '' };
+  value: { isAuthorized: boolean; userId: ''; username: ''; token: '' };
 };
 const initialState: SliceState = {
   value: { isAuthorized: false, userId: '', username: '', token: '' },

@@ -1,9 +1,16 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
+import useProfileStore from '../../tools/zustand/profile.store.module';
 
 function ProfileLangComponent({ param }: ParamType) {
+  const { indProfileData } = useProfileStore();
+  const [start, setStar] = useState<string>('');
+  const [offStar, setOffStar] = useState<string>('');
+  const [isDetail, setIsDetail] = useState<number>(0);
+
   return (
     <div
       className={classNames('tab-pane fade', {
@@ -22,30 +29,37 @@ function ProfileLangComponent({ param }: ParamType) {
           </tr>
         </thead>
         <tbody style={{ border: '1px solid #dee2e6' }}>
-          <tr>
-            <td />
-            <td>
-              <span className="horizontal license_horizontal" />
-              <span className="star" style={{ marginLeft: '-37%' }}>
-                {' '}
-                ★★★
-              </span>
-
-              <span className="horizontal license_horizontal" />
-              <span className="star" style={{ marginLeft: '-37%' }}>
-                {' '}
-                ★★
-              </span>
-              <span style={{ color: '#a7a6a6' }}>★</span>
-              <span className="horizontal license_horizontal" />
-              <span className="star" style={{ marginLeft: '-37%' }}>
-                {' '}
-                ★
-              </span>
-              <span style={{ color: '#a7a6a6' }}>★★</span>
-            </td>
-            <td />
-          </tr>
+          {Array.from({ length: indProfileData.abilityList.length || 0 }).map(
+            (item, index) => (
+              <tr key={indProfileData.abilityList[index].skillName}>
+                <td>{indProfileData.abilityList[index].skillName}</td>
+                <td>
+                  <span className="horizontal license_horizontal" />
+                  <span className="star">
+                    {indProfileData.abilityList[index].skillGrade === 'A'
+                      ? '★★★'
+                      : indProfileData.abilityList[index].skillGrade === 'B'
+                        ? '★★'
+                        : indProfileData.abilityList[index].skillGrade === 'C'
+                          ? '★'
+                          : ''}
+                  </span>
+                  <span style={{ color: '#a7a6a6' }}>
+                    {indProfileData.abilityList[index].skillGrade === 'A'
+                      ? ''
+                      : indProfileData.abilityList[index].skillGrade === 'B'
+                        ? '★'
+                        : indProfileData.abilityList[index].skillGrade === 'C'
+                          ? '★★'
+                          : ''}
+                  </span>
+                </td>
+                <td>
+                  {indProfileData.abilityList[index].classificationCriteria}
+                </td>
+              </tr>
+            ),
+          )}
         </tbody>
       </table>
     </div>

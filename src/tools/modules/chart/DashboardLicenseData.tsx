@@ -8,6 +8,7 @@ export type LicenseDataType = {
   idx: number;
   userId: string;
   licenseName: string;
+  licenseDate: string;
 };
 
 export default function LicenseChartOptions() {

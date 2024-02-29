@@ -10,7 +10,7 @@ import dexcel from '../tools/resources/images/icon/dexcel.gif';
 import ProfileBasicComponent from './profile-component/ProfileBasicComponent';
 import ProfileCareerComponent from './profile-component/ProfileCareerComponent';
 import ProfileLicenseComponent from './profile-component/ProfileLicenseComponent';
-import ProfileEducationComponent from './ProfileEducationComponent';
+import ProfileEducationComponent from './profile-component/ProfileEducationComponent';
 import ProfileLangComponent from './profile-component/ProfileLangComponent';
 import ProfileSkillInventoryComponent from './profile-component/ProfileSkillInventoryComponent';
 import ProfileTabComponent from './profile-component/ProfileTabComponent';

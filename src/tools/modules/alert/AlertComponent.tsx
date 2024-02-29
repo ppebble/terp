@@ -5,11 +5,13 @@ interface AlertType {
   inputTitle: string;
   showCancelBtn?: boolean;
   inputText?: string;
+  onClose?: () => void;
 }
 function AlertComponent({
   inputTitle,
   showCancelBtn = false,
   inputText = '',
+  onClose,
 }: AlertType) {
   return Swal.fire({
     title: inputTitle,
@@ -18,6 +20,7 @@ function AlertComponent({
                 `,
     showCancelButton: showCancelBtn,
     confirmButtonText: '확인',
+    didClose: onClose,
   });
 }
 

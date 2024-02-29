@@ -10,7 +10,7 @@ import dexcel from '../tools/resources/images/icon/dexcel.gif';
 import ProfileBasicComponent from './profile-component/ProfileBasicComponent';
 import ProfileCareerComponent from './profile-component/ProfileCareerComponent';
 import ProfileLicenseComponent from './profile-component/ProfileLicenseComponent';
-import ProfileEducationComponent from './ProfileEducationComponent';
+import ProfileEducationComponent from './profile-component/ProfileEducationComponent';
 import ProfileLangComponent from './profile-component/ProfileLangComponent';
 import ProfileSkillInventoryComponent from './profile-component/ProfileSkillInventoryComponent';
 import ProfileTabComponent from './profile-component/ProfileTabComponent';
@@ -21,35 +21,29 @@ import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useProfileStore from '../tools/zustand/profile.store.module';
 
 export type ParamType = {
-  param: { activeTab: string; data: ProfileIndividualProps | undefined };
+  param: { activeTab: string; data?: ProfileIndividualProps | undefined };
 };
 function FormProfile() {
   const { userId, username } = useLoginStore();
   const profileStore = useProfileStore();
-  const { data, isLoading, isSuccess } = useQuery<ProfileIndividualProps>({
-    queryKey: ['getProfileElseData'],
-    queryFn: () => getProfileData(userId),
-    throwOnError: true,
-  });
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('basic');
   const param = { activeTab, data: {} as ProfileIndividualProps };
 
   useEffect(() => {
-    if (isSuccess) {
-      if (data && profileStore.selectedUser === userId) {
-        if (data) {
-          profileStore.setIndProfileData(data);
-        }
-      } else {
+    if (profileStore.indProfileData) {
+      if (profileStore.selectedUser !== userId) {
         AlertComponent({
           inputTitle: 'Auth Error',
           inputText: `조회할 권한이 없습니다.`,
+          onClose: () => {
+            navigate(-1);
+          },
         });
-        navigate(-1);
       }
     }
-  }, [data, isSuccess]);
+  }, []);
 
   const tabChangeHandler = (value: string) => {
     setActiveTab(value);

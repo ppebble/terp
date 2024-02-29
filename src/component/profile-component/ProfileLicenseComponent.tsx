@@ -10,9 +10,9 @@ import { LicenseDataType } from '../../tools/modules/chart/DashboardLicenseData'
 function ProfileLicenseComponent({ param }: ParamType) {
   const { userId } = useLoginStore();
   const { licenseData } = useProfileStore();
-  const [userData, setUserData] = useState<LicenseDataType>();
+  const [userData, setUserData] = useState<LicenseDataType[]>([]);
   useEffect(() => {
-    setUserData(_.find(licenseData, { userId }));
+    setUserData(_.filter(licenseData, { userId }));
   }, []);
   if (userData) {
     console.log(userData);
@@ -36,10 +36,12 @@ function ProfileLicenseComponent({ param }: ParamType) {
           </tr>
         </thead>
         <tbody style={{ border: '1px solid #dee2e6' }}>
-          <tr>
-            <td style={{ paddingLeft: 20 }} />
-            <td />
-          </tr>
+          {Array.from({ length: userData.length || 0 }).map((item, index) => (
+            <tr key={userData[index].licenseName}>
+              <td style={{ paddingLeft: 20 }}>{userData[index].licenseName}</td>
+              <td style={{ paddingLeft: 20 }}>{userData[index].licenseDate}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

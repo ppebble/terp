@@ -71,7 +71,7 @@
 .orgchart td.left,
 .orgchart td.right,
 .orgchart td.top {
-  ackground-color: #aaa;
+  background-color: #aaa;
 }
 .orgchart .top-level .title {
   background-color: #d941c5;

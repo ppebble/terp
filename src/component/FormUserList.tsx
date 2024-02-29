@@ -8,8 +8,9 @@ import Mainlayout from '../tools/modules/MainLayout';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useLoginStore from '../tools/zustand/login.store.module';
 import useProfileStore from '../tools/zustand/profile.store.module';
-import { GetTotalProfile } from '../tools/service/ServiceAPI';
+import { GetTotalProfile, getProfileData } from '../tools/service/ServiceAPI';
 import { ProfileInfo } from '../tools/model/ProfileInfo';
+import { ProfileIndividualProps } from '../tools/model/ProfileIndividualProps';
 
 function FormUserList() {
   const [members, setMembers] = useState<ProfileInfo[]>([]);
@@ -21,6 +22,11 @@ function FormUserList() {
     queryFn: GetTotalProfile,
     refetchOnWindowFocus: true,
     staleTime: 30000,
+  });
+  const indQuery = useQuery<ProfileIndividualProps>({
+    queryKey: ['getProfileElseData'],
+    queryFn: () => getProfileData(useLogin.userId),
+    // throwOnError: true,
   });
 
   useEffect(() => {
@@ -34,6 +40,9 @@ function FormUserList() {
       if (!isLoading) useProfile.setCurrentMember(data || []);
       if (isSuccess) {
         setMembers(useProfile.current);
+      }
+      if (indQuery.isSuccess) {
+        useProfile.setIndProfileData(indQuery.data);
       }
     }
   }, [data]);

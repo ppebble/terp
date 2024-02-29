@@ -19,7 +19,9 @@ function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
 
   const navigate = useNavigate();
-  const { isAuthorized } = useLoginStore();
+  const { isAuthorized } = useLoginStore(state => ({
+    isAuthorized: state.isAuthorized,
+  }));
   const useProfile = useProfileStore();
 
   // profile 테이블 전체 값

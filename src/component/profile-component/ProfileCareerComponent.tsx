@@ -11,20 +11,8 @@ import { ProfileCareerType } from '../../tools/model/ProfileIndividualProps';
 function ProfileCareerComponent({ param }: ParamType) {
   const careerDiv = useRef<HTMLDivElement>(null);
   const { indProfileData } = useProfileStore();
-  //   const [hireDays, setHireDay] = useState<number[]>([]);
-  //   const [hireTerms, sethireTerm] = useState<number>([]);
-  const [isDetail, setIsDetail] = useState<boolean>(false);
-  useEffect(() => {
-    // if (indProfileData.careerList) {
-    //   indProfileData.careerList.forEach(e => {
-    //     const startDate = moment(e.careerStart);
-    //     const endDate = e.careerEnd ? moment(e.careerEnd) : moment.now();
-    //     const hireDate = Math.abs(startDate.diff(endDate, 'days'));
-    //     setHireDay(hireDay);
-    //     sethireTerm(hireDate / 30);
-    //   });
-    // }
-  }, [indProfileData]);
+  const [isDetail, setIsDetail] = useState<number>(0);
+  useEffect(() => {}, [indProfileData]);
   function setHireDay(item: ProfileCareerType) {
     const startDate = moment(item.careerStart);
     const endDate = item.careerEnd ? moment(item.careerEnd) : moment.now();
@@ -42,18 +30,24 @@ function ProfileCareerComponent({ param }: ParamType) {
       aria-labelledby="v-pills-career-tab-icons"
     >
       ※경력기간의 개월 수는 30일 단위로 나눈 값입니다.
-      {Array.from({ length: indProfileData.careerList.length }).map(
+      {Array.from({ length: indProfileData.careerList.length || 0 }).map(
         (_, index) => (
           <div
             className="accordion accordion-secondary notFirstMargin"
             style={{ border: '1px solid rgba(0,0,0,.125)' }}
+            key={indProfileData.careerList[index].companyName}
           >
             <div
               className="card-header sort"
               data-toggle="collapse"
               role="button"
               aria-expanded="false"
-              onClick={() => setIsDetail(!isDetail)}
+              onClick={() => {
+                if (isDetail !== index + 1) setIsDetail(index + 1);
+                else {
+                  setIsDetail(0);
+                }
+              }}
             >
               <div className="span-title">
                 <i className="far fa-building" />
@@ -72,7 +66,7 @@ function ProfileCareerComponent({ param }: ParamType) {
             </div>
             <div
               className={classNames('collapse', {
-                ' show': isDetail,
+                ' show': isDetail === index + 1,
               })}
               style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}
             >
