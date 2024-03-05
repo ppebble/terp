@@ -20,6 +20,7 @@ function ProfileSkillInventoryComponent({ param }: ParamType) {
           id="v-pills-project-icons"
           role="tabpanel"
           aria-labelledby="v-pills-project-tab-icons"
+          key={indProfileData.careerList[index].companyName}
         >
           skill
           <div

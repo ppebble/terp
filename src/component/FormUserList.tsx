@@ -16,6 +16,7 @@ function FormUserList() {
   const [members, setMembers] = useState<ProfileInfo[]>([]);
   const useLogin = useLoginStore();
   const useProfile = useProfileStore();
+  const profileStore = useProfileStore();
   const navigate = useNavigate();
   const { data, isSuccess, isLoading } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
@@ -86,23 +87,6 @@ function FormUserList() {
                 }}
               >
                 <div className="horizontal">
-                  {/* 자격증명 :
-                  <input
-                    style={{ border: '1px solid #b5b5b5', marginLeft: 10 }}
-                    className="au-input au-input--xl selectBox"
-                    type="text"
-                    placeholder="검색 단어 포함"
-                    id="license_name"
-                    name="license_name"
-                    maxLength={30}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-light"
-                    // onClick={redux}
-                  >
-                    <i className="zmdi zmdi-search">자격증 소지자 검색</i>
-                  </button> */}
                   <button type="button" className="btn btn-light">
                     <i className="zmdi zmdi-search">
                       <a href="/member/leave">퇴사자 관리</a>
@@ -123,10 +107,21 @@ function FormUserList() {
               columns={col}
               data={members}
               sortIcon={<SortIcon />}
+              selectableRows
               pagination
               onRowClicked={e => {
                 useProfile.setSelectedUser(e.userId);
-                navigate('/member/profile');
+                if (profileStore.indProfileData) {
+                  if (profileStore.selectedUser !== e.userId) {
+                    AlertComponent({
+                      inputTitle: 'Auth Error',
+                      inputText: `조회할 권한이 없습니다.`,
+                    });
+                    return false;
+                  }
+                  navigate('/member/profile');
+                }
+                return true;
               }}
             />
           </div>

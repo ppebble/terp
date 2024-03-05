@@ -32,17 +32,17 @@ function FormProfile() {
   const param = { activeTab, data: {} as ProfileIndividualProps };
 
   useEffect(() => {
-    if (profileStore.indProfileData) {
-      if (profileStore.selectedUser !== userId) {
-        AlertComponent({
-          inputTitle: 'Auth Error',
-          inputText: `조회할 권한이 없습니다.`,
-          onClose: () => {
-            navigate(-1);
-          },
-        });
-      }
-    }
+    // if (profileStore.indProfileData) {
+    //   if (profileStore.selectedUser !== userId) {
+    //     AlertComponent({
+    //       inputTitle: 'Auth Error',
+    //       inputText: `조회할 권한이 없습니다.`,
+    //       onClose: () => {
+    //         navigate(-1);
+    //       },
+    //     });
+    //   }
+    // }
   }, []);
 
   const tabChangeHandler = (value: string) => {
