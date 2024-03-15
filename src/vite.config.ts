@@ -1,39 +1,36 @@
-/* eslint-disable consistent-return */
 /* eslint-disable import/no-extraneous-dependencies */
-import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+
+// https://vitejs.dev/config/
+
+const localApi = 'http://192.168.0.212:8080';
+const SIMSApi = 'https://192.168.0.101:9097';
 
 export default defineConfig({
-  build: {
-    outDir: 'build',
-    chunkSizeWarningLimit: 100,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return id
-              .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
-              .toString();
-          }
-        },
-      },
-      onwarn(warning, warn) {
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
-          return;
-        }
-        warn(warning);
-      },
-    },
-  },
-  plugins: [reactRefresh()],
+  base: process.env.NODE_ENV === 'development' ? '/' : './',
+  plugins: [react()],
   server: {
+    port: 3000,
     proxy: {
       '/api': {
-        target: 'https://api.nex-erp.com',
+        target: localApi,
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        ws: true,
+        secure: false,
+      },
+      //   '/member': {
+      //     target: 'http://localhost:8080',
+      //     changeOrigin: true,
+      //     ws: true,
+      //     secure: false,
+      //   },
+      '/datainfo': {
+        target: SIMSApi,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/datainfo/, ''),
+        secure: false,
+        ws: true,
       },
     },
   },

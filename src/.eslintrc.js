@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'import/prefer-default-export': 'off',
+    'max-len': ['error', { code: 150, ignoreRegExpLiterals: true }],
     'react/jsx-filename-extension': [
       'warn',
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
@@ -48,7 +49,6 @@ module.exports = {
       },
     ],
     'react/require-default-props': 'warn',
-    'max-len': ['warn', { code: 80 }],
     'react/prop-types': 'off',
     'prettier/prettier': [
       'error',

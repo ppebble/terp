@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/ArrowDownward';
 import Mainlayout from '../tools/modules/MainLayout';
 import { fetchProfile } from '../tools/redux/profile';
-import { RootState, useAppDispatch } from '../tools/redux/store';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from '../tools/redux/store';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import { ProfileInfo } from '../tools/model/ProfileInfo';
 

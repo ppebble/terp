@@ -22,7 +22,7 @@ function LoginComponent() {
   const [cookies, setCookie, removeCookie] = useCookies(['userId']);
   const [isRemember, setIsRemember] = useState(false);
 
-  const { login } = useLoginStore();
+  const loginAction = useLoginStore(state => state.action);
 
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
@@ -45,12 +45,6 @@ function LoginComponent() {
     mutationKey: ['login'],
     mutationFn: (param: LoginModel) => postLogin(param),
   });
-  useEffect(() => {
-    if (cookies.userId !== undefined) {
-      setUserId(cookies.userId);
-      setIsRemember(true);
-    }
-  }, [cookies.userId]);
   const onClose = () => {
     onClickToggleModal();
   };
@@ -58,8 +52,11 @@ function LoginComponent() {
     const param = {
       userId: refUserId.current?.value,
       userPw: password.current?.value,
+      //   id: 'smlee',
+      //   pwd: 'smlee',
     };
     if (!param.userId || !param.userPw) {
+      // if (!param.id || !param.pwd) {
       AlertComponent({
         inputTitle: '로그인 실패',
         inputText: `아이디, 비밀번호를 입력해주세요`,
@@ -67,20 +64,22 @@ function LoginComponent() {
       return false;
     }
     loginMutation.mutate(param, {
-      onSuccess: data => {
+      onSuccess: res => {
         if (isRemember) {
-          setCookie('userId', data.Data.userId, {
+          setCookie('userId', res.data.userId, {
             path: '/',
             expires: new Date(Date.now() + 86400000),
           });
         }
         const user: UserInfo = {
           isAuthorized: true,
-          userId: data.Data.userId,
-          username: data.Data.userName,
-          token: data.Data.token,
+          //   userId: data.id,
+          //   token: data.accessToken,
+          userId: res.data.userId,
+          userName: res.data.userName,
+          token: res.data.token,
         };
-        login(user);
+        loginAction.login(user);
         navigate('/');
       },
       onError: () => {

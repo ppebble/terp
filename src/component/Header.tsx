@@ -1,30 +1,17 @@
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../tools/css/header.css';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
-import { RootState, useAppDispatch } from '../tools/redux/store';
-import { login } from '../tools/redux/profile';
-import useLoginStore from '../tools/zustand/login.store.module';
-import SideNav from '../SideNav.jsx';
+import { useIsAuth, useLoginAction } from '../tools/zustand/login.store.module';
 
 function Header() {
-  //   const dispatch = useAppDispatch();
-  //   const state = useAppSelector(
-  //     (profileState: RootState) => profileState.profile,
-  //   );
-  const navigate = useNavigate();
-  const { isAuthorized, logout } = useLoginStore();
-  const goBack = () => {
-    navigate(-1);
-  };
+  const isAuthorized = useIsAuth();
+  const loginAction = useLoginAction();
 
   const loginState = isAuthorized;
 
   const onClickLogOut = () => {
-    logout();
+    loginAction.logout();
   };
 
   return (

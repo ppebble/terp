@@ -3,17 +3,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import { ParamType } from '../FormProfile';
-import useProfileStore from '../../tools/zustand/profile.store.module';
-import useLoginStore from '../../tools/zustand/login.store.module';
 import { ProfileInfo } from '../../tools/model/ProfileInfo';
+import { useUserId } from '../../tools/zustand/login.store.module';
+import { useTotalData } from '../../tools/zustand/profile.store.module';
 
 function ProfileBasicComponent({ param }: ParamType) {
   const basicDiv = useRef<HTMLDivElement>(null);
-  const { userId } = useLoginStore();
-  const { totalData } = useProfileStore();
+  const userId = useUserId();
+  const total = useTotalData();
   const [userData, setUserData] = useState<ProfileInfo>();
   useEffect(() => {
-    setUserData(_.find(totalData, { userId }));
+    setUserData(_.find(total, { userId }));
   }, []);
   return (
     <div

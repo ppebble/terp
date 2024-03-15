@@ -53,7 +53,8 @@ function ProfileSkillInventoryComponent({ param }: ParamType) {
               style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}
             >
               <div
-                className="card-body profileWidth15p"
+                className="card-body profile
+                Width15p"
                 style={{ backgroundColor: 'white' }}
               >
                 <div className="line-bottom padding10">

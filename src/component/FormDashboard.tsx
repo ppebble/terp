@@ -1,39 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import orgImg from '../tools/resources/images/icon/organization.png';
 import '../tools/css/dashBoard.css';
 import 'react-bootstrap';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
-import useProfileStore from '../tools/zustand/profile.store.module';
 import Mainlayout from '../tools/modules/MainLayout';
 import DataColumnChart from '../tools/modules/chart/DataColumnChart';
-import useLoginStore from '../tools/zustand/login.store.module';
 
-import { LicenseDataType } from '../tools/modules/chart/DashboardLicenseData';
-import { GetTotalProfile, getLicenseData } from '../tools/service/ServiceAPI';
 import { useChartData } from '../tools/react-query/custom-hook/useDashChartData';
-import { ProfileInfo } from '../tools/model/ProfileInfo';
+import { useMainboardQuery } from '../tools/react-query/custom-hook/useCustomHook';
+import { useIsAuth } from '../tools/zustand/login.store.module';
+import {
+  useCurrent,
+  useProfileAction,
+  useTotalData,
+} from '../tools/zustand/profile.store.module';
 
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
-
+  const profileAction = useProfileAction();
+  const current = useCurrent();
+  const total = useTotalData();
   const navigate = useNavigate();
-  const { isAuthorized } = useLoginStore(state => ({
-    isAuthorized: state.isAuthorized,
-  }));
-  const useProfile = useProfileStore();
+  const isAuthorized = useIsAuth();
 
-  // profile 테이블 전체 값
-  const totalRes = useQuery<ProfileInfo[]>({
-    queryKey: ['getTotalData'],
-    queryFn: GetTotalProfile,
-  });
-  // profile.license 테이블 전체 값
-  const licenseRes = useQuery<LicenseDataType[]>({
-    queryKey: ['getLicenseData'],
-    queryFn: getLicenseData,
-  });
+  //   // profile 테이블 전체 값
+  //   const totalRes = useQuery<ProfileInfo[]>({
+  //     queryKey: ['getTotalData'],
+  //     queryFn: GetTotalProfile,
+  //   });
+  //   // profile.license 테이블 전체 값
+  //   const licenseRes = useQuery<LicenseDataType[]>({
+  //     queryKey: ['getLicenseData'],
+  //     queryFn: getLicenseData,
+  //   });
+  const useDashboard = useMainboardQuery();
 
   useEffect(() => {
     if (!isAuthorized) {
@@ -43,27 +44,20 @@ function FormDashboard() {
       });
       navigate('/login');
     } else {
-      if (totalRes.isError && licenseRes.isError) {
+      if (useDashboard.res.error) {
         AlertComponent({
           inputTitle: 'Network Error',
           inputText: `데이터 조회에 실패했습니다.`,
         });
       }
-      if (!totalRes.isLoading) {
-        useProfile.setTotalData(totalRes.data || []);
-      }
-      if (!totalRes.isLoading) {
-        // current ? total 중 leavedate가 null인 값
-        useProfile.setCurrentMember(useProfile.totalData);
-      }
-      if (totalRes.isSuccess) {
-        setMemberCount(useProfile.current.length);
-      }
-      if (!licenseRes.isLoading) {
-        useProfile.setLicenseData(licenseRes.data || []);
+      if (!useDashboard.res.pending) {
+        profileAction.setTotalData(useDashboard.res.data[2] || []);
+        profileAction.setCurrentMember(total);
+        setMemberCount(current.length);
+        profileAction.setLicenseData(useDashboard.res.data[0] || []);
       }
     }
-  }, [totalRes.data, licenseRes.data, useProfile.current]);
+  }, [useDashboard.res.data, current]);
   const chartData = useChartData();
 
   return (

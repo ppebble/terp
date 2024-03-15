@@ -3,20 +3,17 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import { ParamType } from '../FormProfile';
-import useLoginStore from '../../tools/zustand/login.store.module';
-import useProfileStore from '../../tools/zustand/profile.store.module';
+import { useUserId } from '../../tools/zustand/login.store.module';
 import { LicenseDataType } from '../../tools/modules/chart/DashboardLicenseData';
+import { useLicense } from '../../tools/zustand/profile.store.module';
 
 function ProfileLicenseComponent({ param }: ParamType) {
-  const { userId } = useLoginStore();
-  const { licenseData } = useProfileStore();
+  const userId = useUserId();
+  const license = useLicense();
   const [userData, setUserData] = useState<LicenseDataType[]>([]);
   useEffect(() => {
-    setUserData(_.filter(licenseData, { userId }));
+    setUserData(_.filter(license, { userId }));
   }, []);
-  if (userData) {
-    console.log(userData);
-  }
   return (
     <div
       className={classNames('tab-pane fade', {

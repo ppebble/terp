@@ -24,9 +24,9 @@ export type ParamType = {
   param: { activeTab: string; data: ProfileIndividualProps | undefined };
 };
 function FormEditProfile() {
-  const { userId, username } = useLoginStore();
+  const { userId, userName } = useLoginStore();
   const profileStore = useProfileStore();
-  const { data, isLoading, isSuccess } = useQuery<ProfileIndividualProps>({
+  const { data, isSuccess } = useQuery<ProfileIndividualProps>({
     queryKey: ['getProfileElseData'],
     queryFn: () => getProfileData(userId),
     throwOnError: true,
@@ -78,7 +78,7 @@ function FormEditProfile() {
               style={{ fontSize: 22, fontWeight: 'bolder' }}
               htmlFor="profile"
             >
-              {username}님의 정보
+              {userName}님의 정보
             </label>
             <span>
               <button className="btn btn-success btn-sm">

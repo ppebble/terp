@@ -1,16 +1,7 @@
 /* eslint-disable no-param-reassign */
 /// <reference types="redux-persist" />
-import {
-  combineReducers,
-  configureStore,
-  createAsyncThunk,
-  createSlice,
-} from '@reduxjs/toolkit';
-import persistReducer from 'redux-persist/es/persistReducer';
-import storage from 'redux-persist/lib/storage';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
 import ServiceUrls from '../config/ServiceUrls';
 import { ProfileInfo } from '../model/ProfileInfo';
 
@@ -35,21 +26,6 @@ import { ProfileInfo } from '../model/ProfileInfo';
           unsubscribe()하면 subscribe로 실행했던 함수가 이후에 제거됨
         store.replaceReducer: 원래 가지고있던 reducer를 다른 reducer로 변경
     */
-// export interface ProfileAttributes {
-//   empNo: string;
-//   userId: string;
-//   userName: string;
-//   userEmail: string;
-//   tel: string;
-//   position: string;
-//   spot: string;
-//   task: string;
-//   techGrade: string;
-//   scienceTechCertify: string;
-//   locDetail: string;
-//   hiredate: string;
-//   leavedate: string;
-// }
 /**
  * 비동기  처리
  */

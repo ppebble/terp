@@ -2,11 +2,10 @@ import React from 'react';
 import '../../tools/css/profileTab.css';
 
 type ProfileTabType = {
-  activeTab: string;
   tabChangeHandler: (value: string) => void;
 };
 
-function ProfileTabComponent({ activeTab, tabChangeHandler }: ProfileTabType) {
+function ProfileTabComponent({ tabChangeHandler }: ProfileTabType) {
   return (
     <div
       className="nav flex-column nav-pills nav-secondary

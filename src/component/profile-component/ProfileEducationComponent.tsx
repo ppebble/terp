@@ -5,19 +5,19 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { ParamType } from '../FormProfile';
-import useProfileStore from '../../tools/zustand/profile.store.module';
+import { useIndProfile } from '../../tools/zustand/profile.store.module';
 
 function ProfileEducationComponent({ param }: ParamType) {
-  const { indProfileData } = useProfileStore();
+  const personal = useIndProfile();
   const [isDetail, setIsDetail] = useState<number>(0);
   return (
     <>
-      {Array.from({ length: indProfileData.eduList.length }).map((_, index) => (
+      {Array.from({ length: personal.eduList.length }).map((_, index) => (
         <div
           className={classNames('tab-pane fade', {
             'active show': param.activeTab === 'edu',
           })}
-          key={indProfileData.eduList[index].eduName}
+          key={personal.eduList[index].eduName}
           id="v-pills-education-icons"
           role="tabpanel"
           aria-labelledby="v-pills-education-tab-icons"
@@ -55,15 +55,15 @@ function ProfileEducationComponent({ param }: ParamType) {
                 <h5 className="horizontal" style={{ width: '30%' }}>
                   시작일
                 </h5>
-                {indProfileData.eduList[index].startDate}
+                {personal.eduList[index].startDate}
                 <h5 className="horizontal" style={{ width: '30%' }}>
                   종료일
                 </h5>
-                {indProfileData.eduList[index].EndDate}
+                {personal.eduList[index].EndDate}
                 <h5 className="horizontal" style={{ width: '30%' }}>
                   기관
                 </h5>
-                {indProfileData.eduList[index].organization}
+                {personal.eduList[index].organization}
               </div>
             </div>
           </div>

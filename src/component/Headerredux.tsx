@@ -4,8 +4,11 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../tools/css/header.css';
-import { useAppSelector } from '../tools/redux/hook/useCustomHook';
-import { RootState, useAppDispatch } from '../tools/redux/store';
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from '../tools/redux/store';
 import { login } from '../tools/redux/profile';
 
 function Header() {

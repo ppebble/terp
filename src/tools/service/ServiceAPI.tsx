@@ -6,6 +6,14 @@ import AlertComponent from '../modules/alert/AlertComponent';
 import { SignupModel } from '../model/SignupModel';
 import { LoginModel } from '../model/LoginModel';
 
+const BaseUrl = axios.create({
+  timeout: 10000,
+  withCredentials: true,
+  headers: {
+    Accept: 'application/json',
+  },
+});
+
 /**
  *
  * @returns Profile 전체 데이터
@@ -69,15 +77,18 @@ export const postSignUp = async (param: SignupModel) => {
 export const postLogin = async (param: LoginModel) => {
   return await axios
     .post(`${ServiceUrls().localUrl}/member/sign-in`, param)
+    // .post(`/datainfo/rest/v1.0/users/auth`, param)
+    // .post(`${ServiceUrls().localSims}/datainfo/rest/v1.0/users/auth`, param)
     .then(res => res.data)
     .catch(res => {
       AlertComponent({
-        inputTitle: '로그인실패',
+        inputTitle: '인터넷 연결 확인',
         inputText: ` ${res.message}`,
       });
     });
+  //   const result = await BaseUrl.post('/datainfo/rest/v1.0/users/auth', param);
+  //   return { data: result.data };
 };
-
 /**
  *
  * @returns 개인 프로필 데이터
@@ -85,6 +96,9 @@ export const postLogin = async (param: LoginModel) => {
 export const getProfileData = async (userId: string) => {
   return await axios
     .get(`${ServiceUrls().localUrl}/member/profile?userId=${userId}`)
+    // .get(
+    //   `${ServiceUrls().localApi}/api/getMyHistory?empNo=22-208&offset=0&limit=1`,
+    // )
     .then(res => res.data)
     .catch(e => {
       AlertComponent({

@@ -6,19 +6,33 @@ import SortIcon from '@material-ui/icons/ArrowDownward';
 import { useQuery } from '@tanstack/react-query';
 import Mainlayout from '../tools/modules/MainLayout';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
-import useLoginStore from '../tools/zustand/login.store.module';
-import useProfileStore from '../tools/zustand/profile.store.module';
+// import useLoginStore from '../tools/zustand/login.store.module';
 import { GetTotalProfile, getProfileData } from '../tools/service/ServiceAPI';
 import { ProfileInfo } from '../tools/model/ProfileInfo';
 import { ProfileIndividualProps } from '../tools/model/ProfileIndividualProps';
+import LoadingSpinner from '../tools/modules/LoadingSpinner';
+import { useIsAuth, useUserId } from '../tools/zustand/login.store.module';
+import {
+  useCurrent,
+  useIndProfile,
+  useProfileAction,
+} from '../tools/zustand/profile.store.module';
 
 function FormUserList() {
   const [members, setMembers] = useState<ProfileInfo[]>([]);
-  const useLogin = useLoginStore();
-  const useProfile = useProfileStore();
-  const profileStore = useProfileStore();
+  const [loading, setLoading] = useState<boolean>(true);
+  //   const useLogin = useLoginStore();
+  const isAuth = useIsAuth();
+  const userId = useUserId();
+  const profileAction = useProfileAction();
+  const current = useCurrent();
+  const personal = useIndProfile();
   const navigate = useNavigate();
-  const { data, isSuccess, isLoading } = useQuery<ProfileInfo[]>({
+  const {
+    data: member,
+    isSuccess,
+    isPending,
+  } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
     refetchOnWindowFocus: true,
@@ -26,27 +40,31 @@ function FormUserList() {
   });
   const indQuery = useQuery<ProfileIndividualProps>({
     queryKey: ['getProfileElseData'],
-    queryFn: () => getProfileData(useLogin.userId),
-    // throwOnError: true,
+    queryFn: () => getProfileData(userId),
+    throwOnError: true,
   });
 
   useEffect(() => {
-    if (!useLogin.isAuthorized) {
+    if (!isAuth) {
       AlertComponent({
         inputTitle: 'Auth Error',
         inputText: `로그인 되지 않았습니다. 로그인 화면으로 이동합니다`,
       });
       navigate('/login');
     } else {
-      if (!isLoading) useProfile.setCurrentMember(data || []);
+      if (isPending) {
+        setLoading(true);
+      }
       if (isSuccess) {
-        setMembers(useProfile.current);
+        setLoading(false);
+        profileAction.setCurrentMember(member || []);
+        setMembers(current);
       }
       if (indQuery.isSuccess) {
-        useProfile.setIndProfileData(indQuery.data);
+        profileAction.setIndProfileData(indQuery.data);
       }
     }
-  }, [data]);
+  }, [member]);
 
   const col: TableColumn<ProfileInfo>[] = [
     { selector: row => row.empNo, name: '사원번호' },
@@ -102,28 +120,31 @@ function FormUserList() {
       <div className="section__content section__content--p30">
         <div className="card shadow mb-4">
           <div className="table-responsive" style={{ overflow: 'auto' }}>
-            <DataTable
-              title="인력 사항"
-              columns={col}
-              data={members}
-              sortIcon={<SortIcon />}
-              selectableRows
-              pagination
-              onRowClicked={e => {
-                useProfile.setSelectedUser(e.userId);
-                if (profileStore.indProfileData) {
-                  if (profileStore.selectedUser !== e.userId) {
-                    AlertComponent({
-                      inputTitle: 'Auth Error',
-                      inputText: `조회할 권한이 없습니다.`,
-                    });
-                    return false;
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <DataTable
+                title="인력 사항"
+                columns={col}
+                data={members}
+                sortIcon={<SortIcon />}
+                selectableRows
+                pagination
+                onRowClicked={e => {
+                  if (personal) {
+                    if (userId !== e.userId) {
+                      AlertComponent({
+                        inputTitle: 'Auth Error',
+                        inputText: `조회할 권한이 없습니다.`,
+                      });
+                      return false;
+                    }
+                    navigate('/member/profile');
                   }
-                  navigate('/member/profile');
-                }
-                return true;
-              }}
-            />
+                  return true;
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ import ProfileSkillInventoryComponent from './profile-component/ProfileSkillInve
 import ProfileTabComponent from './profile-component/ProfileTabComponent';
 import { ProfileIndividualProps } from '../tools/model/ProfileIndividualProps';
 import { getProfileData } from '../tools/service/ServiceAPI';
-import useLoginStore from '../tools/zustand/login.store.module';
+import { useUserName } from '../tools/zustand/login.store.module';
 import AlertComponent from '../tools/modules/alert/AlertComponent';
 import useProfileStore from '../tools/zustand/profile.store.module';
 
@@ -24,26 +24,15 @@ export type ParamType = {
   param: { activeTab: string; data?: ProfileIndividualProps | undefined };
 };
 function FormProfile() {
-  const { userId, username } = useLoginStore();
-  const profileStore = useProfileStore();
+  //   const username = useLoginStore(state => state.username);
+  //   const profileStore = useProfileStore();
+  const username = useUserName();
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('basic');
   const param = { activeTab, data: {} as ProfileIndividualProps };
 
-  useEffect(() => {
-    // if (profileStore.indProfileData) {
-    //   if (profileStore.selectedUser !== userId) {
-    //     AlertComponent({
-    //       inputTitle: 'Auth Error',
-    //       inputText: `조회할 권한이 없습니다.`,
-    //       onClose: () => {
-    //         navigate(-1);
-    //       },
-    //     });
-    //   }
-    // }
-  }, []);
+  useEffect(() => {}, []);
 
   const tabChangeHandler = (value: string) => {
     setActiveTab(value);

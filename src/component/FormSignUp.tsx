@@ -15,6 +15,7 @@ import AlertComponent from '../tools/modules/alert/AlertComponent';
 import Mainlayout from '../tools/modules/MainLayout';
 import { postSignUp } from '../tools/service/ServiceAPI';
 import { SignupModel } from '../tools/model/SignupModel';
+import { useMainboardQuery } from '../tools/react-query/custom-hook/useCustomHook';
 
 function FormSignIn() {
   const spot = useRef<HTMLInputElement>(null);
@@ -60,15 +61,16 @@ function FormSignIn() {
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const signUpMutation = useMutation({
-    mutationFn: (param: SignupModel) => postSignUp(param),
-    onSuccess: () => {
-      navigate('/login');
-    },
-    onError: () => {
-      return false;
-    },
-  });
+  //   const signUpMutation = useMutation({
+  //     mutationFn: (param: SignupModel) => postSignUp(param),
+  //     onSuccess: () => {
+  //       navigate('/login');
+  //     },
+  //     onError: () => {
+  //       return false;
+  //     },
+  //   });
+  const useDashboard = useMainboardQuery();
 
   const techLevelList = ['없음', '초급', '중급', '고급', '특급'];
   const spotList = [
@@ -183,7 +185,7 @@ function FormSignIn() {
       gradSchool: gradschool,
     };
     param.createTime = nowDate;
-    signUpMutation.mutate(param, {
+    useDashboard.signupMutation(param, {
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: ['getTotalData'] }),
     });

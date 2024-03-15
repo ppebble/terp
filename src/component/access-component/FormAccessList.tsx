@@ -5,17 +5,17 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@material-ui/core';
 import Mainlayout from '../../tools/modules/MainLayout';
 import AlertComponent from '../../tools/modules/alert/AlertComponent';
-import useLoginStore from '../../tools/zustand/login.store.module';
 import { GetTotalProfile } from '../../tools/service/ServiceAPI';
 import { ProfileInfo } from '../../tools/model/ProfileInfo';
 import { AccessProps } from '../../tools/model/AccessProps';
 import AccessCommuteComponent from './AccessCommuteComponent';
 import AccessPersonalComponent from './AccessPersonalComponent copy';
+import { useIsAuth } from '../../tools/zustand/login.store.module';
 
 function FormAccessList() {
   const [members, setMembers] = useState<AccessProps[]>([]);
-  const useLogin = useLoginStore();
   const navigate = useNavigate();
+  const isAuth = useIsAuth();
   const { data, isSuccess, isLoading } = useQuery<ProfileInfo[]>({
     queryKey: ['getTotalData'],
     queryFn: GetTotalProfile,
@@ -32,7 +32,7 @@ function FormAccessList() {
   };
 
   useEffect(() => {
-    if (!useLogin.isAuthorized) {
+    if (!isAuth) {
       AlertComponent({
         inputTitle: 'Auth Error',
         inputText: `로그인 되지 않았습니다. 로그인 화면으로 이동합니다`,
