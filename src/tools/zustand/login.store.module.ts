@@ -75,4 +75,4 @@ export const useUserId = () => useLoginStore(state => state.userId);
 export const useIsAuth = () => useLoginStore(state => state.isAuthorized);
 export const useToken = () => useLoginStore(state => state.token);
 export const useLoginAction = () => useLoginStore(state => state.action);
-// export default useLoginStore;
+export default useLoginStore;

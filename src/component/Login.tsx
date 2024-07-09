@@ -38,7 +38,7 @@ function LoginComponent() {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsRemember(e.target.checked);
     if (!e.target.checked) {
-      removeCookie('userId');
+      //   removeCookie('userId');
     }
   };
   const loginMutation = useMutation({

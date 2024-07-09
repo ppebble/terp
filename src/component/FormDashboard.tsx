@@ -10,7 +10,7 @@ import DataColumnChart from '../tools/modules/chart/DataColumnChart';
 import { useChartData } from '../tools/react-query/custom-hook/useDashChartData';
 import { useMainboardQuery } from '../tools/react-query/custom-hook/useCustomHook';
 import { useIsAuth } from '../tools/zustand/login.store.module';
-import {
+import useProfileStore, {
   useCurrent,
   useProfileAction,
   useTotalData,
@@ -19,6 +19,7 @@ import {
 function FormDashboard() {
   const [memberCount, setMemberCount] = useState(0);
   const profileAction = useProfileAction();
+  const useStore = useProfileStore();
   const current = useCurrent();
   const total = useTotalData();
   const navigate = useNavigate();
@@ -51,10 +52,10 @@ function FormDashboard() {
         });
       }
       if (!useDashboard.res.pending) {
-        profileAction.setTotalData(useDashboard.res.data[2] || []);
-        profileAction.setCurrentMember(total);
+        useStore.action.setTotalData(useDashboard.res.data[2] || []);
+        useStore.action.setCurrentMember(total);
         setMemberCount(current.length);
-        profileAction.setLicenseData(useDashboard.res.data[0] || []);
+        useStore.action.setLicenseData(useDashboard.res.data[0] || []);
       }
     }
   }, [useDashboard.res.data, current]);

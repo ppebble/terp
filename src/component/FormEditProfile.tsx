@@ -39,7 +39,7 @@ function FormEditProfile() {
     if (isSuccess) {
       if (data && profileStore.selectedUser === userId) {
         if (data) {
-          profileStore.setIndProfileData(data);
+          profileStore.action.setIndProfileData(data);
         }
       } else {
         AlertComponent({
@@ -89,10 +89,7 @@ function FormEditProfile() {
           <div className="card-body">
             <div className="row">
               <div className="col-12 col-md-3">
-                <ProfileTabComponent
-                  activeTab={activeTab}
-                  tabChangeHandler={tabChangeHandler}
-                />
+                <ProfileTabComponent tabChangeHandler={tabChangeHandler} />
               </div>
               <div className="col-12 col-md-9">
                 <div className="tab-content" id="v-pills-tabContent">

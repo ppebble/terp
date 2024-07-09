@@ -33,7 +33,7 @@ function FormLeaveList() {
 
     if (!isLoading) {
       // leave ? total 중 leavedate IS NOT NULL 인 값
-      useProfile.setLeaveMember(data || []);
+      useProfile.action.setLeaveMember(data || []);
     }
     if (isSuccess) {
       setMembers(useProfile.leave);

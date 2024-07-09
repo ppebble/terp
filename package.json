@@ -84,7 +84,7 @@
     "zustand": "^4.5.0"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "dev": "vite --mode dev",
     "build": "tsc && vite build",
     "serve": "vite preview"
